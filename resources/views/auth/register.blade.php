@@ -71,7 +71,7 @@
                         <div class="form-group row">
                             <label for="gender" class="col-md-4 col-form-label text-md-right">{{ __('Gender') }}</label>
                             <div class="col-md-6">
-                                <select class="form-control">
+                                <select class="form-control" name="gender" id="gender">
                                     <option value="MALE">Male</option>
                                     <option value="FEMALE">Female</option>
                                 </select>
