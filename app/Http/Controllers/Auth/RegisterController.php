@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use Illuminate\Auth\Events\Registered;
 
 class RegisterController extends Controller
 {
@@ -32,7 +33,7 @@ class RegisterController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    protected $redirectTo = '/login';
 
     /**
      * Create a new controller instance.
@@ -83,14 +84,37 @@ class RegisterController extends Controller
             'password' => Hash::make($data['password']),
         ]);
 
+        $this->sendVerifyMessage($user->id);
+
+        return $user;
+    }
+
+    /**
+     * Handle a registration request for the application.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function register(Request $request)
+    {
+        $this->validator($request->all())->validate();
+
+        event(new Registered($user = $this->create($request->all())));
+
+        return $this->registered($request, $user)
+                        ?: redirect($this->redirectPath());
+    }
+
+    public function sendVerifyMessage($id)
+    {
+        $user = User::where('id', $id)->first();
+
         $verifyUser = VerifyUser::create([
-            'user_id' => $user->id,
+            'user_id' => $id,
             'token' => str_random(40)
         ]);
  
         Mail::to($user->email)->send(new VerifyMail($user));
-
-        return $user;
     }
 
     public function verifyUser($token)
