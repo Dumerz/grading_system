@@ -57,7 +57,7 @@ class ResetPasswordController extends Controller
 
         event(new PasswordReset($user));
 
-        if (!$user->verified) {
+        if ($user->verified) {
             $this->guard()->login($user);
         }
 
