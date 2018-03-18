@@ -29,7 +29,7 @@
                             <label for="name_middle" class="col-md-4 col-form-label text-md-right">{{ __('Middle Name') }}</label>
 
                             <div class="col-md-6">
-                                <input id="name_middle" type="text" class="form-control{{ $errors->has('name_middle') ? ' is-invalid' : '' }}" name="name_middle" value="{{ old('name_middle') }}" required autofocus>
+                                <input id="name_middle" type="text" class="form-control{{ $errors->has('name_middle') ? ' is-invalid' : '' }}" name="name_middle" value="{{ old('name_middle') }}" autofocus>
 
                                 @if ($errors->has('name_middle'))
                                     <span class="invalid-feedback">
