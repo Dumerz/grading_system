@@ -23,6 +23,7 @@ class CreateUsersTable extends Migration
             $table->enum('gender', ["MALE", "FEMALE"]);
             $table->timestamp('date_birth');
             $table->boolean('verified')->default(false);
+            $table->string('usertype')->default('USRTYPE001');
             $table->string('email')->unique();
             $table->string('password');
             $table->rememberToken();
