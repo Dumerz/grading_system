@@ -27,4 +27,15 @@ class UserController extends Controller
     {
         return view('user.list');
     }
+
+    /**
+     * Show the users list.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function list_sample()
+    {
+        $users = User::paginate(5);
+        return view('user.listsample', compact('users'));
+    }
 }

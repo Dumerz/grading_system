@@ -37,4 +37,9 @@ class User extends Authenticatable
     {
         return $this->hasOne('App\VerifyUser');
     }
+
+    public function typeuser()
+    {
+        return $this->belongsTo('App\Usertype', 'usertype', 'usertype_id');
+    }
 }

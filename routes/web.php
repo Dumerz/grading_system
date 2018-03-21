@@ -32,3 +32,4 @@ Route::post('password/reset', 'Auth\ResetPasswordController@reset');
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::get('/user', 'UserController@list')->name('user');
+Route::get('/usersample', 'UserController@list_sample')->name('user_sample');
