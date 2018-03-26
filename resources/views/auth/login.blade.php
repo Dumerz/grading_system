@@ -5,12 +5,12 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             @if (session('status'))
-                <div class="alert alert-success">
+                <div class="card-login mx-auto alert alert-success">
                 {{ session('status') }}
                 </div>
             @endif
             @if (session('warning'))
-                <div class="alert alert-warning">
+                <div class="card-login mx-auto alert alert-warning">
                 {{ session('warning') }}
                 </div>
             @endif

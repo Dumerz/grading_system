@@ -18,7 +18,7 @@ class CreateCoursesTable extends Migration
             $table->string('name');
             $table->string('description');
             $table->integer('evaluator');
-            $table->enum('status');
+            $table->enum('status', ["UNPUBLISHED", "PUBLISHED", "ARCHIVED"]);
             $table->timestamps();
         });
     }

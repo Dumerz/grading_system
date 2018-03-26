@@ -2,19 +2,18 @@
 
 @section('content')
 <div class="container">
+@if (session('status'))
+    <div class="card-login mx-auto alert alert-success">
+        {{ session('status') }}
+    </div>
+@endif
     <div class="card card-login mx-auto mt-5">
         <div class="card-header">{{ __('Reset Password') }}</div>
         <div class="card-body">
-            @if (session('status'))
-                <div class="alert alert-success">
-                    {{ session('status') }}
-                </div>
-            @else
                 <div class="text-center mt-4 mb-5">
                     <h4>Forgot your password?</h4>
                     <p>Enter your email address and we will send you instructions on how to reset your password.</p>
                 </div>
-            @endif
             <form method="POST" action="{{ route('password.email') }}">
                 @csrf
                 <div class="form-group">
