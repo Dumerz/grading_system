@@ -21,19 +21,19 @@
   <div class="collapse navbar-collapse" id="navbarResponsive">
     <ul class="navbar-nav navbar-sidenav" id="exampleAccordion">
       <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Dashboard">
-        <a class="nav-link" href="index.html">
+        <a class="nav-link" href="{{ route('home') }}">
           <i class="fa fa-fw fa-dashboard"></i>
           <span class="nav-link-text">Dashboard</span>
         </a>
       </li>
       <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Users">
-        <a class="nav-link" href="index.html">
+        <a class="nav-link" href="{{ route('user') }}">
           <i class="fa fa-fw fa-user"></i>
           <span class="nav-link-text">Users</span>
         </a>
       </li>
       <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Users">
-        <a class="nav-link" href="index.html">
+        <a class="nav-link" href="{{ route('course') }}">
           <i class="fa fa-fw fa-book"></i>
           <span class="nav-link-text">Courses</span>
         </a>
@@ -49,7 +49,7 @@
     <ul class="navbar-nav ml-auto">
       <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle mr-lg-2" id="messagesDropdown" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            {{ Auth::user()->name_last }}, {{ Auth::user()->name_first }} {{ Auth::user()->name_middle }}  {{ Auth::user()->name_suffix }}
+            {{ __(Auth::user()->name_full) }}
           </a>
           <div class="dropdown-menu bg-dark">
             <a class="dropdown-item nav-link bg-dark" data-toggle="modal" data-target="#exampleModal">Logout</a>
@@ -85,10 +85,10 @@
       </div>
     </div>
   <!-- Bootstrap core JavaScript-->
-  <script src="vendor/jquery/jquery.min.js"></script>
-  <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="{{url('/')}}/vendor/jquery/jquery.min.js"></script>
+  <script src="{{url('/')}}/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
   <!-- Core plugin JavaScript-->
-  <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
-    <script src="js/sb-admin.min.js"></script>
+  <script src="{{url('/')}}/vendor/jquery-easing/jquery.easing.min.js"></script>
+    <script src="{{url('/')}}/js/sb-admin.min.js"></script>
 </body>
 </html>

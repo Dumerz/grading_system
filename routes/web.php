@@ -30,6 +30,15 @@ Route::get('password/reset/{token}', 'Auth\ResetPasswordController@showResetForm
 Route::post('password/reset', 'Auth\ResetPasswordController@reset');
 
 Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/home/user', 'UserController@list')->name('user');
+Route::get('/home/user/add', 'UserController@add')->name('user_add');
+Route::get('/home/user/{user}', 'UserController@show')->name('user_show');
 
-Route::get('/user', 'UserController@list')->name('user');
-Route::get('/usersample', 'UserController@list_sample')->name('user_sample');
+Route::get('/home/course', 'CourseController@list')->name('course');
+Route::get('/home/course/{course}', 'CourseController@show')->name('course_show');
+
+Route::get('/home/usertype', 'UsertypeController@list')->name('usertype');
+Route::get('/home/usertype/{usertype}', 'UsertypeController@show')->name('usertype_show');
+
+Route::get('/home/userstatus', 'UserstatusController@list')->name('userstatus');
+Route::get('/home/userstatus/{userstatus}', 'UserstatusController@show')->name('userstatus_show');

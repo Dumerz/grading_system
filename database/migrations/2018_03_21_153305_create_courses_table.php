@@ -15,10 +15,10 @@ class CreateCoursesTable extends Migration
     {
         Schema::create('courses', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name');
+            $table->string('name')->unique();
             $table->string('description');
             $table->integer('evaluator');
-            $table->enum('status', ["UNPUBLISHED", "PUBLISHED", "ARCHIVED"]);
+            $table->enum('status', ["UNPUBLISHED", "PUBLISHED", "ARCHIVED"])->default("UNPUBLISHED");
             $table->timestamps();
         });
     }

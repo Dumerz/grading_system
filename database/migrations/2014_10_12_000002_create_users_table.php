@@ -22,8 +22,9 @@ class CreateUsersTable extends Migration
             $table->string('name_suffix')->nullable();
             $table->enum('gender', ["MALE", "FEMALE"]);
             $table->timestamp('date_birth');
-            $table->boolean('verified')->default(false);
+            $table->string('status')->default('USRSTAT001');
             $table->string('usertype')->default('USRTYPE001');
+            $table->foreign('usertype')->references('usertype_id')->on('usertypes')->onUpdate('cascade');
             $table->string('email')->unique();
             $table->string('password');
             $table->rememberToken();
@@ -38,6 +39,9 @@ class CreateUsersTable extends Migration
      */
     public function down()
     {
+        Schema::table('users', function ($table) {
+            $table->dropForeign(['usertype']);
+        });
         Schema::dropIfExists('users');
     }
 }

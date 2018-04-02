@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Carbon\Carbon;
 
 class User extends Authenticatable
 {
@@ -15,7 +16,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'name_first', 'name_middle', 'name_last', 'name_suffix', 'gender', 'date_birth', 'email', 'password',
+        'name', 'name_first', 'name_middle', 'name_last', 'name_suffix', 'gender', 'date_birth', 'email', 'password', 'usertype'
     ];
 
     /**
@@ -27,6 +28,15 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
+    public function getAgeAttribute() {
+        return Carbon::parse($this->date_birth)
+                                ->diff(Carbon::now())
+                                ->format('%y');
+    }
+
+    public function getNameFullAttribute() {
+        return ucfirst($this->name_last) . ', ' . ucfirst($this->name_first) . ' ' . substr($this->name_middle, 0, 1) . '.';
+    }
 
     /**
      * The attributes that connects to verify user table.

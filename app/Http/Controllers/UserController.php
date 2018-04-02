@@ -25,17 +25,48 @@ class UserController extends Controller
      */
     public function list()
     {
-        return view('user.list');
+        $users = User::paginate(10);
+        return view('user.list', compact('users'));
     }
 
     /**
      * Show the users list.
+     * @param App\User
+     * @return \Illuminate\Http\Response
+     */
+    public function show(User $user)
+    {
+        return $user;
+    }
+    /**
+     * Show the user add view.
      *
      * @return \Illuminate\Http\Response
      */
-    public function list_sample()
+    public function add()
     {
-        $users = User::paginate(5);
-        return view('user.listsample', compact('users'));
+        return view('user.add');
+    }
+
+
+    /**
+     * Show the user update view.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function update()
+    {
+        return view('user.update');
+    }
+
+
+    /**
+     * Show the user delete view.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function delete()
+    {
+        return view('user.delete');
     }
 }

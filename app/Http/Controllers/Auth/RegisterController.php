@@ -4,11 +4,12 @@ namespace App\Http\Controllers\Auth;
 
 use App\User;
 use App\VerifyUser;
-use App\Mail\VerifyMail;
+use App\Notifications\User\Verify;
+use App\Notifications\User\Verified;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Auth\Events\Registered;
@@ -54,7 +55,7 @@ class RegisterController extends Controller
     protected function validator(array $data)
     {
         return Validator::make($data, [
-            'name' => 'required|string|max:255',
+            'name' => 'required|string|max:255|unique:users',
             'name_first' => 'required|string|max:255',
             'name_middle' => 'nullable|string|max:255',
             'name_last' => 'required|string|max:255',
@@ -113,8 +114,10 @@ class RegisterController extends Controller
             'user_id' => $id,
             'token' => str_random(40)
         ]);
+
+        $url = url('register/verify', $user->verifyUser->token);
  
-        Mail::to($user->email)->send(new VerifyMail($user));
+        $user->notify(new Verify($user, $url));
     }
 
     public function verifyUser($token)
@@ -124,10 +127,11 @@ class RegisterController extends Controller
         if(isset($verifyUser) ){
 
             $user = $verifyUser->user;
-            if(!$user->verified) {
-                $verifyUser->user->verified = 1;
+            if($user->status == 'USRSTAT001') {
+                $verifyUser->user->status = 'USRSTAT002';
                 $verifyUser->user->save();
                 $status = "Your e-mail is verified. You can now login.";
+                $user->notify(new Verified($user));
             }
 
             else{
@@ -145,6 +149,6 @@ class RegisterController extends Controller
     protected function registered(Request $request, $user)
     {
         $this->guard()->logout();
-        return redirect('/login')->with('status', 'We sent you an activation code. Check your email and click on the link to verify.');
+        return redirect('/login')->with('status', 'We sent you an verification link. Check your email and click on the link to verify.');
     }
 }
