@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use App\UserStatus;
+use App\Userstatus;
 
 class UserstatusTableSeeder extends Seeder
 {
