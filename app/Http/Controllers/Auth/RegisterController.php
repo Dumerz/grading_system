@@ -9,6 +9,7 @@ use App\Notifications\User\Verified;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
@@ -54,15 +55,22 @@ class RegisterController extends Controller
      */
     protected function validator(array $data)
     {
+      $messages = [
+          'regex'    => 'The :attribute is not an acceptable name value.',
+          'name.regex'    => 'The :attribute is not an acceptable username value.',
+          'password.regex'    => 'The :attribute complexity is not acceptable.'
+      ];
         return Validator::make($data, [
-            'name' => 'required|string|max:255|unique:users',
-            'name_first' => 'required|string|max:255',
-            'name_middle' => 'nullable|string|max:255',
-            'name_last' => 'required|string|max:255',
-            'name_suffix' => 'nullable|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:6|confirmed',
-        ]);
+          'name' => 'required|string|max:255|min:6|unique:users|regex:/^[\pL\d]+(?:[\pL\d\_\.]+)*$/u',
+          'name_first' => 'required|required|regex:/^[\pL]+(?:[\pL\s\-\.]+)*$/u|min:2|max:255',
+          'name_middle' => 'nullable|regex:/^[\pL]+(?:[\pL\s\-\.]+)*$/u|max:255',
+          'name_last' => 'required|required|regex:/^[\pL]+(?:[\pL\s\-\.]+)*$/u|min:2|max:255',
+          'name_suffix' => 'nullable|alpha|max:255',
+          'gender' => 'required|in:MALE,FEMALE',
+          'email' => 'required|string|email|max:255|unique:users',
+          'password' => 'required|string|min:8|confirmed|regex:/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#\$%\^&\*]).{8,}$/',
+      'date_birth' => 'required|date|before_or_equal:' . date('Y-m-d')
+        ], $messages);
     }
 
     /**
@@ -75,14 +83,14 @@ class RegisterController extends Controller
     {
         $user = User::create([
             'name' => $data['name'],
-            'name_first' => $data['name_first'],
-            'name_middle' => $data['name_middle'],
-            'name_last' => $data['name_last'],
-            'name_suffix' => $data['name_suffix'],
+            'name_first' => Str::title($data['name_first']),
+            'name_middle' => Str::title($data['name_middle']),
+            'name_last' => Str::title($data['name_last']),
+            'name_suffix' => Str::title($data['name_suffix']),
             'gender' => $data['gender'],
             'date_birth' => $data['date_birth'],
             'email' => $data['email'],
-            'password' => Hash::make($data['password']),
+            'password' => Hash::make($data['password'])
         ]);
 
         $this->sendVerifyMessage($user->id);

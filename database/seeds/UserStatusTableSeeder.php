@@ -24,7 +24,7 @@ class UserstatusTableSeeder extends Seeder
 
         Userstatus::create([
             'userstatus_id'     => 'USRSTAT003',
-            'description'    => 'DEACTIVE'
+            'description'    => 'INACTIVE'
         ]);
     }
 }

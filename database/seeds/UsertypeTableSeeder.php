@@ -14,12 +14,12 @@ class UsertypeTableSeeder extends Seeder
     {
         Usertype::create([
             'usertype_id'     => 'USRTYPE001',
-            'description'    => 'LEARNER'
+            'description'    => 'RATEE'
         ]);
 
         Usertype::create([
             'usertype_id'     => 'USRTYPE002',
-            'description'    => 'EVALUATOR'
+            'description'    => 'RATER'
         ]);
 
         Usertype::create([

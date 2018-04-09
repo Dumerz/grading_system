@@ -6,11 +6,11 @@
     <li class="breadcrumb-item">
       <a href="{{ route('home') }}">Dashboard</a>
     </li>
-    <li class="breadcrumb-item active">UserTypes</li>
+    <li class="breadcrumb-item active">Usertypes</li>
   </ol>
   <div class="card mb-3">
     <div class="card-header">
-      <i class="fa fa-user"></i> Usertypes</div>
+      <i class="fa fa-users"></i> Usertypes</div>
     <div class="card-body">
       <div class="table-responsive">
           <table class="table" id="dataTable" width="100%" cellspacing="0">
@@ -27,8 +27,8 @@
               <tr>
                 <td><input type="checkbox" name=""></td>
                 <td><a href="{{ route('usertype_show', $usertype->no) }}">{{ __(title_case($usertype->description))}}</td>
-                <td>{{ $usertype->created_at->toFormattedDateString()}}</td>
-                <td>{{ $usertype->updated_at->toFormattedDateString()}}</td>
+                <td>{{ $usertype->created_at->diffForHumans() }}</td>
+                <td>{{ $usertype->updated_at->diffForHumans() }}</td>
               </tr>
             @endforeach
             </tbody>

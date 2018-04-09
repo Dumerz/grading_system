@@ -72,9 +72,22 @@
                             <label for="gender" class="col-md-4 col-form-label text-md-right">{{ __('Gender') }}</label>
                             <div class="col-md-6">
                                 <select class="form-control" name="gender" id="gender">
-                                    <option value="MALE">Male</option>
-                                    <option value="FEMALE">Female</option>
+                                  <option value="MALE"
+                                    @if (old('gender') == "MALE"))
+                                        selected 
+                                    @endif
+                                    >Male</option>
+                                  <option value="FEMALE"
+                                    @if (old('gender') == "FEMALE"))
+                                        selected 
+                                    @endif
+                                    >Female</option>
                                 </select>
+                                @if ($errors->has('gender'))
+                                    <span class="invalid-feedback">
+                                        <strong>{{ $errors->first('gender') }}</strong>
+                                    </span>
+                                @endif
                             </div>
                         </div>
 

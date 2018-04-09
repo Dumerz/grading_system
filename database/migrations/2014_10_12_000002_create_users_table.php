@@ -23,8 +23,9 @@ class CreateUsersTable extends Migration
             $table->enum('gender', ["MALE", "FEMALE"]);
             $table->timestamp('date_birth');
             $table->string('status')->default('USRSTAT001');
+            $table->foreign('status')->references('userstatus_id')->on('userstatus')->onUpdate('cascade')->onDelete('restrict');
             $table->string('usertype')->default('USRTYPE001');
-            $table->foreign('usertype')->references('usertype_id')->on('usertypes')->onUpdate('cascade');
+            $table->foreign('usertype')->references('usertype_id')->on('usertypes')->onUpdate('cascade')->onDelete('restrict');
             $table->string('email')->unique();
             $table->string('password');
             $table->rememberToken();
@@ -41,6 +42,7 @@ class CreateUsersTable extends Migration
     {
         Schema::table('users', function ($table) {
             $table->dropForeign(['usertype']);
+            $table->dropForeign(['status']);
         });
         Schema::dropIfExists('users');
     }

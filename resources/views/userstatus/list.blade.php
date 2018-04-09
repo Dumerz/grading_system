@@ -10,7 +10,7 @@
   </ol>
   <div class="card mb-3">
     <div class="card-header">
-      <i class="fa fa-user"></i> Userstatus</div>
+      <i class="fa fa-user-circle"></i> Userstatus</div>
     <div class="card-body">
       <div class="table-responsive">
           <table class="table" id="dataTable" width="100%" cellspacing="0">
@@ -27,8 +27,8 @@
               <tr>
                 <td><input type="checkbox" name=""></td>
                 <td><a href="{{ route('userstatus_show', $userstat->no) }}">{{ __(title_case($userstat->description))}}</td>
-                <td>{{ $userstat->created_at->toFormattedDateString()}}</td>
-                <td>{{ $userstat->updated_at->toFormattedDateString()}}</td>
+                <td>{{ __($userstat->created_at->diffForHumans()) }}</td>
+                <td>{{ __($userstat->updated_at->diffForHumans()) }}</td>
               </tr>
             @endforeach
             </tbody>

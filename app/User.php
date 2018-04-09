@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Support\Str;
 use Carbon\Carbon;
 
 class User extends Authenticatable
@@ -28,6 +29,17 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
+/**
+     * The attributes that should be mutated to dates.
+     *
+     * @var array
+     */
+    protected $dates = [
+        'created_at',
+        'updated_at',
+        'date_birth'
+    ];
+
     public function getAgeAttribute() {
         return Carbon::parse($this->date_birth)
                                 ->diff(Carbon::now())
@@ -35,9 +47,15 @@ class User extends Authenticatable
     }
 
     public function getNameFullAttribute() {
-        return ucfirst($this->name_last) . ', ' . ucfirst($this->name_first) . ' ' . substr($this->name_middle, 0, 1) . '.';
+        $name = Str::title($this->name_last) . ', ' . Str::title($this->name_first);
+        if (!empty($this->name_middle)) {
+            $name =$name . ' ' . Str::upper(substr($this->name_middle, 0, 1)) . '.';
+        }
+        if (!empty($this->name_suffix)) {
+            $name =$name . ' ' . ucfirst($this->name_suffix) . '.';
+        }
+        return $name;
     }
-
     /**
      * The attributes that connects to verify user table.
      *
@@ -51,5 +69,10 @@ class User extends Authenticatable
     public function typeuser()
     {
         return $this->belongsTo('App\Usertype', 'usertype', 'usertype_id');
+    }
+
+    public function statususer()
+    {
+        return $this->belongsTo('App\Userstatus', 'status', 'userstatus_id');
     }
 }

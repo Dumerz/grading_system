@@ -8,9 +8,19 @@
     </li>
     <li class="breadcrumb-item active">Users</li>
   </ol>
+  @if (session('status'))
+    <div class="mx-auto alert alert-success">
+      {{ session('status') }}
+    </div>
+  @endif
   <div class="card mb-3">
     <div class="card-header">
-      <i class="fa fa-user"></i> Users</div>
+      <i class="fa fa-user"></i> Users
+        <a href="{{ route('user_add') }}" class="btn-sm btn-success float-right">
+        <i class="fa fa-user-plus"></i> 
+        {{ __('Add New') }}
+        </a>
+    </div>
     <div class="card-body">
       <div class="table-responsive">
           <table class="table" id="dataTable" width="100%" cellspacing="0">
@@ -33,8 +43,8 @@
                 <td>{{ __(title_case($user->gender))}}</td>
                 <td>{{ __(title_case($user->typeuser->description))}}</td>
                 <td>{{ __($user->age) }}</td>
-                <td>{{ $user->created_at->toFormattedDateString()}}</td>
-                <td>{{ $user->updated_at->toFormattedDateString()}}</td>
+                <td>{{ $user->created_at->diffForHumans()}}</td>
+                <td>{{ $user->updated_at->diffForHumans()}}</td>
               </tr>
             @endforeach
             </tbody>

@@ -9,7 +9,7 @@
     <title>{{ config('app.name', 'Laravel') }}</title>
     <!-- Styles -->
     <link href="{{ asset('vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
-    <link href="{{ asset('vendor/font-awesome/css/font-awesome.min.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ asset('vendor/font-awesome/css/fontawesome-all.min.css') }}" rel="stylesheet" type="text/css">
     <link href="{{ asset('css/sb-admin.min.css') }}" rel="stylesheet">
 </head>
 <body class="fixed-nav sticky-footer bg-dark" id="page-top">
@@ -22,14 +22,8 @@
     <ul class="navbar-nav navbar-sidenav" id="exampleAccordion">
       <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Dashboard">
         <a class="nav-link" href="{{ route('home') }}">
-          <i class="fa fa-fw fa-dashboard"></i>
+          <i class="fas fa-fw fa-tachometer-alt"></i>
           <span class="nav-link-text">Dashboard</span>
-        </a>
-      </li>
-      <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Users">
-        <a class="nav-link" href="{{ route('user') }}">
-          <i class="fa fa-fw fa-user"></i>
-          <span class="nav-link-text">Users</span>
         </a>
       </li>
       <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Users">
@@ -38,21 +32,47 @@
           <span class="nav-link-text">Courses</span>
         </a>
       </li>
+      <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Components">
+        <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseComponents">
+          <i class="fas fa-fw fa-sliders-h"></i>
+          <span class="nav-link-text">Administration</span>
+        </a>
+        <ul class="sidenav-second-level collapse" id="collapseComponents">
+          <li class="nav-item">
+            <a class="nav-link" href="{{ route('user') }}">
+              <i class="fa fa-fw fa-user"></i>
+              <span class="nav-link-text">Users</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{ route('usertype') }}">
+              <i class="fa fa-fw fa-users"></i>
+              <span class="nav-link-text">Usertypes</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{ route('userstatus') }}">
+              <i class="fa fa-fw fa-user-circle"></i>
+              <span class="nav-link-text">Userstatus</span>
+            </a>
+          </li>
+        </ul>
+      </li>
     </ul>
     <ul class="navbar-nav sidenav-toggler">
       <li class="nav-item">
         <a class="nav-link text-center" id="sidenavToggler">
-          <i class="fa fa-fw fa-angle-left"></i>
+          <i class="fa fa-fw fa-angle-right"></i>
         </a>
       </li>
     </ul>
     <ul class="navbar-nav ml-auto">
       <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle mr-lg-2" id="messagesDropdown" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      <canvas id="user-icon" width="40" height="40"></canvas>
+      <a class="nav-link dropdown-toggle mr-lg-2" id="profile" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="display: inline-block; vertical-align: top;">
             {{ __(Auth::user()->name_full) }}
           </a>
           <div class="dropdown-menu bg-dark">
-            <a class="dropdown-item nav-link bg-dark" data-toggle="modal" data-target="#exampleModal">Logout</a>
             <a class="dropdown-item nav-link bg-dark" data-toggle="modal" data-target="#exampleModal">Logout</a>
           </div>
         </li>
@@ -90,5 +110,6 @@
   <!-- Core plugin JavaScript-->
   <script src="{{url('/')}}/vendor/jquery-easing/jquery.easing.min.js"></script>
     <script src="{{url('/')}}/js/sb-admin.min.js"></script>
+    <script src="{{url('/')}}/js/avatar.js"></script>
 </body>
 </html>

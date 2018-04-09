@@ -32,13 +32,21 @@ Route::post('password/reset', 'Auth\ResetPasswordController@reset');
 Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/home/user', 'UserController@list')->name('user');
 Route::get('/home/user/add', 'UserController@add')->name('user_add');
+Route::post('/home/user/add', 'UserController@handleAdd')->name('user_handle_add');
 Route::get('/home/user/{user}', 'UserController@show')->name('user_show');
+Route::get('/home/user/{user}/update', 'UserController@update')->name('user_update');
+Route::post('/home/user/{user}/update', 'UserController@handleUpdate')->name('user_handle_update');
+Route::get('/home/user/{user}/delete', 'UserController@delete')->name('user_delete');
 
 Route::get('/home/course', 'CourseController@list')->name('course');
 Route::get('/home/course/{course}', 'CourseController@show')->name('course_show');
 
 Route::get('/home/usertype', 'UsertypeController@list')->name('usertype');
 Route::get('/home/usertype/{usertype}', 'UsertypeController@show')->name('usertype_show');
+Route::get('/home/usertype/{usertype}/update', 'UsertypeController@update')->name('usertype_update');
+Route::post('/home/usertype/{usertype}/update', 'UsertypeController@handleUpdate')->name('usertype_handle_update');
 
 Route::get('/home/userstatus', 'UserstatusController@list')->name('userstatus');
 Route::get('/home/userstatus/{userstatus}', 'UserstatusController@show')->name('userstatus_show');
+Route::get('/home/userstatus/{userstatus}/update', 'UserstatusController@update')->name('userstatus_update');
+Route::post('/home/userstatus/{userstatus}/update', 'UserstatusController@handleUpdate')->name('userstatus_handle_update');
