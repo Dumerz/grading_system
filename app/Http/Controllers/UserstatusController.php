@@ -4,8 +4,11 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
+use App\User;
 use App\Userstatus;
+use App\Notifications\Userstatus\Updated;
 
 class UserstatusController extends Controller
 {
@@ -59,7 +62,7 @@ class UserstatusController extends Controller
     protected function validator(array $data)
     {
         return Validator::make($data, [
-            'description' => 'string|required|max:255|unique:userstatus',
+            'description' => 'string|required|max:255|unique:userstatus,description',
             'id' => 'required|integer|exists:userstatus,no'
         ]);
     }
@@ -70,11 +73,19 @@ class UserstatusController extends Controller
      */
     public function handleUpdate($id, Request $request)
     {
+        $request['description'] = Str::upper($request['description']);
         $this->validator($request->all())->validate();
         $userstatus = Userstatus::findOrFail($request['id']);
         $userstatus->description = Str::upper($request['description']);
         $userstatus->save();
+        $this->notifyUser($userstatus);
         return redirect()->route('userstatus_show', $request['id'])->with('status', 'Userstatus successfully updated.');
+    }
+    protected function notifyUser(Userstatus $userstatus)
+    {
+        $url = route('userstatus_show', $userstatus->no);
+        $user = User::find(Auth::user()->id);
+        $user->notify(new Updated($url));
     }
   /**
    * Check Userstatus $id as digit.

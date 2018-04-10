@@ -10,6 +10,9 @@ use Illuminate\Support\Facades\Auth;
 use App\User;
 use App\Usertype;
 use App\Userstatus;
+use App\Notifications\User\Updated;
+use App\Notifications\User\Deleted;
+use App\Notifications\User\ChangePassword;
 
 class UserController extends Controller
 {
@@ -67,7 +70,7 @@ class UserController extends Controller
       'name_suffix' => 'nullable|alpha|max:255',
       'gender' => 'required|in:MALE,FEMALE',
       'email' => 'required|string|email|max:255|unique:users',
-      'password' => 'required|string|min:8|confirmed|regex:/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#\$%\^&\*]).{8,}$/',
+      'password' => 'required|min:8|confirmed|regex:/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#\$%\^&\*]).{8,}$/',
       'date_birth' => 'required|date|before_or_equal:' . date('Y-m-d'),
       'usertype' => 'required|exists:usertypes,usertype_id',
       'userstatus' => 'required|exists:userstatus,userstatus_id'
@@ -95,6 +98,39 @@ class UserController extends Controller
       'date_birth' => 'required|date|before_or_equal:' . date('Y-m-d'),
       'usertype' => 'required|exists:usertypes,usertype_id',
       'userstatus' => 'required|exists:userstatus,userstatus_id'
+    ], $messages);
+  }
+  /**
+   * Get a validator for an incoming registration request.
+   *
+   * @param  array  $data
+   * @return \Illuminate\Contracts\Validation\Validator
+   */
+  protected function deleteValidator(array $data)
+  {
+      $messages = [
+          'regex'    => 'The :attribute complexity is not acceptable.'
+      ];
+
+    return Validator::make($data, [
+      'password' => 'required|min:8|regex:/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#\$%\^&\*]).{8,}$/'
+    ], $messages);
+  }
+  /**
+   * Get a validator for an incoming registration request.
+   *
+   * @param  array  $data
+   * @return \Illuminate\Contracts\Validation\Validator
+   */
+  protected function pwdChangeValidator(array $data)
+  {
+      $messages = [
+          'regex'    => 'The :attribute complexity is not acceptable.'
+      ];
+
+    return Validator::make($data, [
+      'password_old' => 'required|min:8|regex:/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#\$%\^&\*]).{8,}$/',
+      'password_new' => 'required|confirmed|min:8|regex:/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#\$%\^&\*]).{8,}$/'
     ], $messages);
   }
   /**
@@ -150,8 +186,8 @@ class UserController extends Controller
    */
   public function add()
   {
-    $usertypes = Usertype::all();
-    $userstatus = Userstatus::all();
+    $usertypes = Usertype::orderBy('no', 'asc')->get();
+    $userstatus = Userstatus::orderBy('no', 'asc')->get();
     return view('user.add', ['usertypes' => $usertypes, 'userstatus' => $userstatus]);
   }
   /**
@@ -178,8 +214,8 @@ class UserController extends Controller
     {
       return redirect()->route('user_show', $user->id)->with('warning', 'You\'re unauthorized for this request.'); 
     }
-    $usertypes = Usertype::all();
-    $userstatus = Userstatus::all();
+    $usertypes = Usertype::orderBy('no', 'asc')->get();
+    $userstatus = Userstatus::orderBy('no', 'asc')->get();
     return view('user.update', ['user' => User::findOrFail($id), 'usertypes' => $usertypes, 'userstatus' => $userstatus]);
   }
   /**
@@ -197,6 +233,7 @@ class UserController extends Controller
       }
       $this->updateValidator($id, $request->all())->validate();
       $this->edit($id, $request->all());
+      $this->notifyUserUpdate($user);
     return redirect()->route('user_show', $user->id)->with('status', 'User successfully updated.');
   }
   /**
@@ -213,6 +250,86 @@ class UserController extends Controller
       return redirect()->route('user_show', $user->id)->with('warning', 'You\'re unauthorized for this request.'); 
     }
     return view('user.delete', ['user' => User::findOrFail($id)]);
+  }
+  /**
+   * Handle the user update.
+   *
+   * @return \Illuminate\Http\Response
+   */
+  public function handleDelete($id, Request $request)
+  {
+    $id = $this->is_digit($id);
+    $user = User::findOrFail($id);
+      if($user->usertype == 'USRTYPE003')
+      {
+        return redirect()->route('user_show', $user->id)->with('warning', 'You\'re unauthorized for that request.'); 
+      }
+      $this->deleteValidator($request->all())->validate();
+      if (Hash::check($request['password'], Auth::user()->password)) {
+        $user->delete();
+        $this->notifyUserDelete($user);
+        return redirect()->route('user')->with('status', 'User successfully deleted.');
+      }
+      else {
+        return back()->withErrors(['password' => 'I did\'nt recognize your password.']);
+      }
+  }
+  /**
+   * Show the user update view.
+   *
+   * @return \Illuminate\Http\Response
+   */
+  public function changePassword($id)
+  {
+    $id = $this->is_digit($id);
+    $user = User::findOrFail($id);
+    if($user->usertype == 'USRTYPE003' && $user->id != Auth::user()->id)
+    {
+      return redirect()->route('user_show', $user->id)->with('warning', 'You\'re unauthorized for that request.'); 
+    }
+    return view('user.pwd_change', ['user' => User::findOrFail($id)]);
+  }
+  /**
+   * Handle the user update.
+   *
+   * @return \Illuminate\Http\Response
+   */
+  public function handleChangePassword($id, Request $request)
+  {
+    $id = $this->is_digit($id);
+    $user = User::findOrFail($id);
+      if($user->usertype == 'USRTYPE003' && $user->id != Auth::user()->id)
+      {
+        return redirect()->route('user_show', $user->id)->with('warning', 'You\'re unauthorized for that request.'); 
+      }
+      $this->pwdChangeValidator($request->all())->validate();
+      if (Hash::check($request['password_old'], Auth::user()->password)) {
+        $user->password = Hash::make($request['password_new']);
+        $user->save();
+        $this->notifyUserChangePassword($user);
+        return redirect()->route('user_show', $user->id)->with('status', 'User password changed successfully.');
+      }
+      else {
+        return back()->withErrors(['password' => 'I did\'nt recognize your password.']);
+      }
+  }
+  protected function notifyUserUpdate(User $user)
+  {
+      $url = route('user_show', $user->id);
+      $receiver = User::find(Auth::user()->id);
+      $receiver->notify(new Updated($user, $url));
+  }
+  protected function notifyUserChangePassword(User $user)
+  {
+      $url = route('user_show', $user->id);
+      $receiver = User::find(Auth::user()->id);
+      $receiver->notify(new ChangePassword($user, $url));
+  }
+  protected function notifyUserDelete(User $user)
+  {
+      $url = route('user_show', $user->id);
+      $receiver = User::find(Auth::user()->id);
+      $receiver->notify(new Deleted($user));
   }
   /**
    * Check Userstatus $id as digit.

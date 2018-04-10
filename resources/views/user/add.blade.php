@@ -76,12 +76,12 @@
             <div class="input-group mb-2 mr-sm-2">
               <select class="form-control {{ $errors->has('gender') ? ' is-invalid' : '' }}" name="gender" id="gender"  required>
                   <option value="MALE"
-                    @if (old('gender') == "MALE"))
+                    @if (old('gender') == "MALE")
                         selected 
                     @endif
                     >Male</option>
                   <option value="FEMALE"
-                    @if (old('gender') == "FEMALE"))
+                    @if (old('gender') == "FEMALE")
                         selected 
                     @endif
                     >Female</option>
@@ -101,7 +101,7 @@
               <select class="form-control {{ $errors->has('usertype') ? ' is-invalid' : '' }}" name="usertype" id="usertype" required>
                 @foreach ($usertypes as $usertype)
                   <option value="{{ __($usertype->usertype_id) }}"
-                    @if (old('usertype') == $usertype->usertype_id))
+                    @if (old('usertype') == $usertype->usertype_id)
                         selected 
                     @endif
                    >{{ __(title_case($usertype->description)) }}</option>
@@ -122,7 +122,7 @@
               <select class="form-control {{ $errors->has('userstatus') ? ' is-invalid' : '' }}" name="userstatus" id="userstatus" required>
                 @foreach ($userstatus as $userstat)
                   <option value="{{ __($userstat->userstatus_id) }}"
-                    @if (old('userstatus') == $userstat->userstatus_id))
+                    @if (old('userstatus') == $userstat->userstatus_id)
                         selected 
                     @endif
                   >{{ __(title_case($userstat->description)) }}</option>

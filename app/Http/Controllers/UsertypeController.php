@@ -3,8 +3,12 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Auth;
+use App\User;
 use App\Usertype;
+use App\Notifications\Usertype\Updated;
 
 class UsertypeController extends Controller
 {
@@ -57,7 +61,7 @@ class UsertypeController extends Controller
   protected function validator(array $data)
   {
     return Validator::make($data, [
-      'description' => 'string|max:255|unique:userstatus',
+      'description' => 'string|max:255|unique:usertypes,description',
       'id' => 'required|integer|exists:usertypes,no'
     ]);
   }
@@ -67,13 +71,21 @@ class UsertypeController extends Controller
    * @param \Illuminate\Http\Request
    * @return \Illuminate\Http\Response
    */
-  public function handleUpdate($id, Request $request)
+  public function handleUpdate(Request $request)
   {
+    $request['description'] = Str::upper($request['description']);
     $this->validator($request->all())->validate();
     $usertype = Usertype::findOrFail($request['id']);
     $usertype->description = $request['description'];
     $usertype->save();
+    $this->notifyUser($usertype);
     return redirect()->route('usertype_show', $request['id'])->with('status', 'Usertype successfully updated.');
+  }
+  protected function notifyUser(Usertype $usertype)
+  {
+    $url = route('usertype_show', $usertype->no);
+    $user = User::find(Auth::user()->id);
+    $user->notify(new Updated($url));
   }
   /**
    * Check Usertype $id as digit.

@@ -37,6 +37,9 @@ Route::get('/home/user/{user}', 'UserController@show')->name('user_show');
 Route::get('/home/user/{user}/update', 'UserController@update')->name('user_update');
 Route::post('/home/user/{user}/update', 'UserController@handleUpdate')->name('user_handle_update');
 Route::get('/home/user/{user}/delete', 'UserController@delete')->name('user_delete');
+Route::post('/home/user/{user}/delete', 'UserController@handleDelete')->name('user_handle_delete');
+Route::get('/home/user/{user}/pwd_change', 'UserController@changePassword')->name('user_change_password');
+Route::post('/home/user/{user}/pwd_change', 'UserController@handleChangePassword')->name('user_handle_change_password');
 
 Route::get('/home/course', 'CourseController@list')->name('course');
 Route::get('/home/course/{course}', 'CourseController@show')->name('course_show');

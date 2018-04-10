@@ -33,7 +33,7 @@
             <div class="form-group row">
               <label for="description" class="col-md-4 col-form-label text-md-right">{{ __('Description') }}</label>
               <div class="col-md-6">
-                <input id="description" type="text" class="form-control {{ $errors->has('description') ? ' is-invalid' : '' }}" name="description" value="{{ old('description') ? old('description') : $usertype->description }}" >
+                <input id="description" type="text" class="form-control {{ $errors->has('description') ? ' is-invalid' : '' }}" name="description" value="{{ old('description') ? old('description') : $usertype->description }}" required autofocus>
                 @if ($errors->has('description'))
                   <span class="invalid-feedback">
                     <strong>{{ $errors->first('description') }}</strong>
