@@ -1,11 +1,11 @@
 
-# Dumerz/Auth
+# Dumerz/grading_system
 
 a **Laravel** authentication module created from scratch
 
 ## Getting Started
 
-This is a simple **authentication module** developed using **Laravel 5.6**. This app is used to manage the authentication functionality in a web application. The module implements the basic principles of **MVC** (Model, View, Controller) and **RESTful** design. This module is not build to be a full stack application but a starting module where you can build your smart ideas. So as a developer like you think, build and share your ideas. 
+This is a simple **grading system** developed using **Laravel 5.6**. This app is used to manage the authentication functionality in a web application. The module implements the basic principles of **MVC** (Model, View, Controller) and **RESTful** design. This module is not build to be a full stack application but a starting module where you can build your smart ideas. So as a developer like you think, build and share your ideas. 
 
 ## Laravel version
 
@@ -65,6 +65,7 @@ Change the setting for the following parameters depending on your needs
 Run the pre build migrations to build the database scheme for the module
 
     $ php artisan migrate
+    $ php artisan db:seed
 
 ## Starting the Server
 

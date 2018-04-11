@@ -63,4 +63,23 @@ class ResetPasswordController extends Controller
 
         redirect($this->redirectPath());
     }
+    protected function rules()
+    {
+        return [
+            'token' => 'required',
+            'email' => 'required|email',
+            'password' => 'required|confirmed|min:6|regex:/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#\$%\^&\*]).{8,}$/',
+        ];
+    }
+    /**
+     * Get the password reset validation error messages.
+     *
+     * @return array
+     */
+    protected function validationErrorMessages()
+    {
+      return [
+          'password.regex'    => 'The :attribute complexity is not acceptable.'
+      ];
+    }
 }
