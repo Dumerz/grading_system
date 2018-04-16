@@ -7,9 +7,9 @@
       <a href="{{ route('home') }}">Dashboard</a>
     </li>
     <li class="breadcrumb-item">
-      <a href="{{ route('user') }}">Users</a>
+      User Profile
     </li>
-    <li href="" class="breadcrumb-item active">Change Password</li>
+    <li class="breadcrumb-item active">Change Password</li>
   </ol>
   <div class="row">
     <div class="col-lg-9 col-md-12 mb-3">
@@ -18,8 +18,21 @@
           <i class="fa fa-key"></i> User Change Password
         </div>
         <div class="card-body">
-          <form method="POST" action="{{ route('user_handle_change_password', $user->id) }}">
+          <form method="POST" action="{{ route('user_profile_handle_change_password', $user->id) }}">
           @csrf
+            <div class="form-group row">
+              <label for="password_old" class="col-md-4 col-form-label text-md-right">{{ __('Old Password') }}</label>
+              <div class="col-md-6">
+                <div class="input-group mb-2 mr-sm-2">
+                  <input type="password" class="form-control {{ $errors->has('password_old') ? ' is-invalid' : '' }}" name="password_old" id="password_old" autofocus required>
+                  @if ($errors->has('password_old'))
+                    <span class="invalid-feedback">
+                      <strong>{{ $errors->first('password_old') }}</strong>
+                    </span>
+                  @endif
+                </div>
+              </div>
+            </div>
             <div class="form-group row">
               <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('New Password') }}</label>
               <div class="col-md-6">

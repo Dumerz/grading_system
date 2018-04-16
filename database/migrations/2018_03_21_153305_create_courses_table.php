@@ -18,7 +18,8 @@ class CreateCoursesTable extends Migration
             $table->string('name')->unique();
             $table->string('description');
             $table->integer('evaluator');
-            $table->enum('status', ["UNPUBLISHED", "PUBLISHED", "ARCHIVED"])->default("UNPUBLISHED");
+            $table->string('status');
+            $table->foreign('status')->references('coursestatus_id')->on('coursestatus')->onUpdate('cascade')->onDelete('restrict');
             $table->timestamps();
         });
     }

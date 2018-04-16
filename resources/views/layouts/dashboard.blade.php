@@ -29,13 +29,13 @@
       <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Users">
         <a class="nav-link" href="{{ route('course') }}">
           <i class="fa fa-fw fa-book"></i>
-          <span class="nav-link-text">Courses</span>
+          <span class="nav-link-text">Course Administration</span>
         </a>
       </li>
       <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Components">
         <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseComponents">
           <i class="fas fa-fw fa-sliders-h"></i>
-          <span class="nav-link-text">Administration</span>
+          <span class="nav-link-text">Site Administration</span>
         </a>
         <ul class="sidenav-second-level collapse" id="collapseComponents">
           <li class="nav-item">
@@ -56,6 +56,12 @@
               <span class="nav-link-text">Userstatus</span>
             </a>
           </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{ route('course_status') }}">
+              <i class="fa fa-fw fa-book"></i>
+              <span class="nav-link-text">Course status</span>
+            </a>
+          </li>
         </ul>
       </li>
     </ul>
@@ -73,6 +79,7 @@
             {{ __(Auth::user()->name_full) }}
           </a>
           <div class="dropdown-menu bg-dark">
+            <a class="dropdown-item nav-link bg-dark" href="{{ route('user_profile_show', Auth::user()->id) }}">My Profile</a>
             <a class="dropdown-item nav-link bg-dark" data-toggle="modal" data-target="#exampleModal">Logout</a>
           </div>
         </li>

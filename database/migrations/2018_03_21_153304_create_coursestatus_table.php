@@ -14,7 +14,9 @@ class CreateCoursestatusTable extends Migration
     public function up()
     {
         Schema::create('coursestatus', function (Blueprint $table) {
-            $table->increments('id');
+            $table->increments('no');
+            $table->string('coursestatus_id')->unique();
+            $table->string('description')->unique();
             $table->timestamps();
         });
     }

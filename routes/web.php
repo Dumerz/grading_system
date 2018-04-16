@@ -29,6 +29,12 @@ Route::post('password/email', 'Auth\ForgotPasswordController@sendResetLinkEmail'
 Route::get('password/reset/{token}', 'Auth\ResetPasswordController@showResetForm')->name('password.reset');
 Route::post('password/reset', 'Auth\ResetPasswordController@reset');
 
+Route::get('/home/user_profile/{user}', 'UserProfileController@show')->name('user_profile_show');
+Route::get('/home/user_profile/{user}/pwd_change', 'UserProfileController@changePassword')->name('user_profile_change_password');
+Route::post('/home/user_profile/{user}/pwd_change', 'UserProfileController@handleChangePassword')->name('user_profile_handle_change_password');
+Route::get('/home/user_profile/{user}/update', 'UserProfileController@update')->name('user_profile_update');
+Route::post('/home/user_profile/{user}/update', 'UserProfileController@handleUpdate')->name('user_profile_handle_update');
+
 Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/home/user', 'UserController@list')->name('user');
 Route::get('/home/user/add', 'UserController@add')->name('user_add');
@@ -41,7 +47,11 @@ Route::post('/home/user/{user}/delete', 'UserController@handleDelete')->name('us
 Route::get('/home/user/{user}/pwd_change', 'UserController@changePassword')->name('user_change_password');
 Route::post('/home/user/{user}/pwd_change', 'UserController@handleChangePassword')->name('user_handle_change_password');
 
+Route::get('/home/course_status', 'CourseController@list')->name('course_status');
+
 Route::get('/home/course', 'CourseController@list')->name('course');
+Route::get('/home/course/add', 'CourseController@add')->name('course_add');
+Route::post('/home/course/add', 'CourseController@handleAdd')->name('course_handle_add');
 Route::get('/home/course/{course}', 'CourseController@show')->name('course_show');
 
 Route::get('/home/usertype', 'UsertypeController@list')->name('usertype');

@@ -19,4 +19,9 @@ class Course extends Model
     {
         return $this->belongsTo('App\User', 'evaluator', 'id');
     }
+
+    public function _status()
+    {
+        return $this->belongsTo('App\Coursestatus', 'status', 'coursestatus_id');
+    }
 }

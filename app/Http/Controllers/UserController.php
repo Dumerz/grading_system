@@ -12,6 +12,7 @@ use App\Usertype;
 use App\Userstatus;
 use App\Notifications\User\Updated;
 use App\Notifications\User\Deleted;
+use App\Notifications\User\Created;
 use App\Notifications\User\ChangePassword;
 
 class UserController extends Controller
@@ -129,7 +130,6 @@ class UserController extends Controller
       ];
 
     return Validator::make($data, [
-      'password_old' => 'required|min:8|regex:/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#\$%\^&\*]).{8,}$/',
       'password_new' => 'required|confirmed|min:8|regex:/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#\$%\^&\*]).{8,}$/'
     ], $messages);
   }
@@ -199,6 +199,7 @@ class UserController extends Controller
   {
     $this->validator($request->all())->validate();
     $user = $this->create($request->all());
+    $this->notifyUserCreate($user);
     return redirect()->route('user_show', $user->id)->with('status', 'User successfully created.');
   }
   /**
@@ -303,21 +304,22 @@ class UserController extends Controller
         return redirect()->route('user_show', $user->id)->with('warning', 'You\'re unauthorized for that request.'); 
       }
       $this->pwdChangeValidator($request->all())->validate();
-      if (Hash::check($request['password_old'], Auth::user()->password)) {
         $user->password = Hash::make($request['password_new']);
         $user->save();
         $this->notifyUserChangePassword($user);
         return redirect()->route('user_show', $user->id)->with('status', 'User password changed successfully.');
-      }
-      else {
-        return back()->withErrors(['password' => 'I did\'nt recognize your password.']);
-      }
   }
   protected function notifyUserUpdate(User $user)
   {
       $url = route('user_show', $user->id);
       $receiver = User::find(Auth::user()->id);
       $receiver->notify(new Updated($user, $url));
+  }
+  protected function notifyUserCreate(User $user)
+  {
+      $url = route('user_show', $user->id);
+      $receiver = User::find(Auth::user()->id);
+      $receiver->notify(new Created($user, $url));
   }
   protected function notifyUserChangePassword(User $user)
   {
