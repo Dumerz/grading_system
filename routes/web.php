@@ -47,12 +47,14 @@ Route::post('/home/user/{user}/delete', 'UserController@handleDelete')->name('us
 Route::get('/home/user/{user}/pwd_change', 'UserController@changePassword')->name('user_change_password');
 Route::post('/home/user/{user}/pwd_change', 'UserController@handleChangePassword')->name('user_handle_change_password');
 
-Route::get('/home/course_status', 'CourseController@list')->name('course_status');
+Route::get('/home/course_status', 'CoursestatusController@list')->name('course_status');
 
 Route::get('/home/course', 'CourseController@list')->name('course');
 Route::get('/home/course/add', 'CourseController@add')->name('course_add');
 Route::post('/home/course/add', 'CourseController@handleAdd')->name('course_handle_add');
 Route::get('/home/course/{course}', 'CourseController@show')->name('course_show');
+Route::get('/home/course/{course}/update', 'CourseController@update')->name('course_update');
+Route::get('/home/course/{course}/delete', 'CourseController@delete')->name('course_delete');
 
 Route::get('/home/usertype', 'UsertypeController@list')->name('usertype');
 Route::get('/home/usertype/{usertype}', 'UsertypeController@show')->name('usertype_show');

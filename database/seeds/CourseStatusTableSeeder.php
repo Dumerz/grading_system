@@ -13,17 +13,17 @@ class CourseStatusTableSeeder extends Seeder
     public function run()
     {
         Coursestatus::create([
-            'userstatus_id'     => 'CSSTAT001',
+            'coursestatus_id'     => 'CSSTAT001',
             'description'    => 'UNPUBLISHED'
         ]);
 
         Coursestatus::create([
-            'userstatus_id'     => 'CSSTAT002',
+            'coursestatus_id'     => 'CSSTAT002',
             'description'    => 'PUBLISHED'
         ]);
 
         Coursestatus::create([
-            'userstatus_id'     => 'CSSTAT003',
+            'coursestatus_id'     => 'CSSTAT003',
             'description'    => 'ARCHIVED'
         ]);
     }

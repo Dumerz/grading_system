@@ -216,7 +216,7 @@
         </div>
       </div>
     </div>
-  @component('user.components.actions', ['user' => $user])
+  @component('course.components.actions', ['course' => $course])
 
   @endcomponent
   </div>

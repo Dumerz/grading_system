@@ -52,9 +52,27 @@ class CourseController extends Controller
      * @param App\Course
      * @return \Illuminate\Http\Response
      */
-    public function show(Course $course)
+    public function show($id)
     {
-        return $course;
+        return view('course.show', ['course' => Course::findOrFail($id)]);
+    }
+    /**
+     * Show the course $course.
+     * @param App\Course
+     * @return \Illuminate\Http\Response
+     */
+    public function update($id)
+    {
+        return view('course.update', ['course' => Course::findOrFail($id)]);
+    }
+    /**
+     * Show the course $course.
+     * @param App\Course
+     * @return \Illuminate\Http\Response
+     */
+    public function delete($id)
+    {
+        return view('course.delete', ['course' => Course::findOrFail($id)]);
     }
   /**
    * Create a new user instance after a valid registration.
