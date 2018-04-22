@@ -17,7 +17,7 @@
     <div class="card-header">
       <i class="fa fa-book"></i> Courses
         <a href="{{ route('course_add') }}" class="btn-sm btn-success float-right">
-        <i class="fa fa-user-plus"></i> 
+        <i class="fa fa-plus"></i> 
         {{ __('Add New') }}
         </a>
     </div>

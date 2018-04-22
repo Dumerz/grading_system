@@ -1,7 +1,7 @@
 @component('mail::message')
 # Hello!
 
-You are receiving this email because we successfully updated a userstatus description in {{ config('app.name') }}.
+You are receiving this email because we successfully updated a coursestatus description in {{ config('app.name') }}.
 Click Check updates to verify the updated information.
 @component('mail::button', ['url' => $url])
 Check updates

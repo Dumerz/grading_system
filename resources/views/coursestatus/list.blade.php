@@ -16,16 +16,35 @@
   <div class="card mb-3">
     <div class="card-header">
       <i class="fa fa-book"></i> Course Status
-        <a href="{{ route('course_add') }}" class="btn-sm btn-success float-right">
-        <i class="fa fa-book"></i> 
-        {{ __('Add New') }}
-        </a>
     </div>
     <div class="card-body">
       <div class="table-responsive">
           <table class="table" id="dataTable" width="100%" cellspacing="0">
+            <thead>
+              <tr>
+                <th><input type="checkbox" name=""></th>
+                <th>Course status</th>
+                <th>Date created</th>
+                <th>Date last modified</th>
+              </tr>
+            </thead>
+            <tbody>
+            @foreach ($coursestatus as $coursestat)
+              <tr>
+                <td><input type="checkbox" name=""></td>
+                <td><a href=" {{ route('course_status_show', $coursestat->no ) }} ">{{ __(title_case($coursestat->description))}}</td>
+                <td>{{ __($coursestat->created_at->diffForHumans()) }}</td>
+                <td>{{ __($coursestat->updated_at->diffForHumans()) }}</td>
+              </tr>
+            @endforeach
+            </tbody>
+            <tfoot>
+              <div class="row m-0">
+              {{ $coursestatus->links('vendor.pagination.bootstrap-4') }}
+              </div>
+            </tfoot>
           </table>
-        </div>
+      </div>
     </div>
   </div>
 </div>

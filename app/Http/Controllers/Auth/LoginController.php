@@ -45,6 +45,11 @@ class LoginController extends Controller
             return back()->with('warning', 'You need to confirm your account. We have sent you an activation code, please check your email.');
         }
         
+        elseif ($user->status == 'USRSTAT003') {
+        auth()->logout();
+            return back()->with('warning', 'Your account is not active. Please contact system adminstrator.');
+        }
+
         return redirect()->intended($this->redirectPath());
     }
 

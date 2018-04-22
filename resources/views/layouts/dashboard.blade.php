@@ -27,17 +27,25 @@
         </a>
       </li>
       <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Users">
-        <a class="nav-link" href="{{ route('course') }}">
-          <i class="fa fa-fw fa-book"></i>
+        <a class="nav-link nav-link-collapse" data-toggle="collapse" href="#collapseComponentsCourse">
+          <i class="fas fa-fw fa-book"></i>
           <span class="nav-link-text">Course Administration</span>
         </a>
+          <ul class="sidenav-second-level collapse" id="collapseComponentsCourse">
+            <li class="nav-item">
+              <a class="nav-link" href="">
+                <i class="fa fa-fw fa-book"></i>
+                <span class="nav-link-text">My Courses</span>
+              </a>
+            </li>
+          </ul>
       </li>
       <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Components">
-        <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseComponents">
+        <a class="nav-link nav-link-collapse" data-toggle="collapse" href="#collapseComponentsSite">
           <i class="fas fa-fw fa-sliders-h"></i>
           <span class="nav-link-text">Site Administration</span>
         </a>
-        <ul class="sidenav-second-level collapse" id="collapseComponents">
+        <ul class="sidenav-second-level collapse" id="collapseComponentsSite">
           <li class="nav-item">
             <a class="nav-link" href="{{ route('user') }}">
               <i class="fa fa-fw fa-user"></i>
@@ -60,6 +68,12 @@
             <a class="nav-link" href="{{ route('course_status') }}">
               <i class="fa fa-fw fa-book"></i>
               <span class="nav-link-text">Course status</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{ route('course') }}">
+              <i class="fa fa-fw fa-book"></i>
+              <span class="nav-link-text">Course</span>
             </a>
           </li>
         </ul>

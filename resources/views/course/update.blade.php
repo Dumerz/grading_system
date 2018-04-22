@@ -16,17 +16,19 @@
       <i class="fa fa-user-circle"></i> Course Update
       </div>
     <div class="card-body">
-        <form method="POST" action="">
+        <form method="POST" action="{{ route('course_handle_update', $course->id) }}">
           @csrf
           <input type="hidden" name="id" id="id" value="{{ $course->id }}" readonly>
             <div class="form-group row">
               <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('Name') }}</label>
               <div class="col-md-6">
                 <div class="input-group mb-2 mr-sm-2">
-                  <input type="text" class="form-control" id="name" value="{{ $course->name }}" readonly>
-                  <div class="input-group-append">
-                    <div class="input-group-text badge-success"><i class="fa fa-lg fa-lock"></i></div>
-                  </div>
+                  <input type="text" class="form-control {{ $errors->has('name') ? ' is-invalid' : '' }}" id="name" name="name" value="{{ old('name') ? old('name') : $course->name }}">
+                  @if ($errors->has('name'))
+                    <span class="invalid-feedback">
+                      <strong>{{ $errors->first('name') }}</strong>
+                    </span>
+                  @endif
                 </div>
               </div>
             </div>
@@ -44,23 +46,33 @@
             <div class="form-group row">
               <label for="evaluator" class="col-md-4 col-form-label text-md-right">{{ __('Evaluator') }}</label>
               <div class="col-md-6">
-                <input id="evaluator" type="text" class="form-control {{ $errors->has('evaluator') ? ' is-invalid' : '' }}" name="evaluator" value="{{ old('evaluator') ? old('evaluator') : $course->evaluator_user->name_full }}" >
-                @if ($errors->has('evaluator'))
-                  <span class="invalid-feedback">
-                    <strong>{{ $errors->first('evaluator') }}</strong>
-                  </span>
-                @endif
+                <div class="input-group mb-2 mr-sm-2">
+                  <input id="evaluator" type="text" class="form-control" value="{{ $course->evaluator_user->name_full }}" readonly>
+                  <div class="input-group-append">
+                    <div class="input-group-text badge-success"><i class="fa fa-lock"></i></div>
+                  </div>
+                </div>
               </div>
             </div>
             <div class="form-group row">
-              <label for="status" class="col-md-4 col-form-label text-md-right">{{ __('Status') }}</label>
+              <label for="name_suffix" class="col-md-4 col-form-label text-md-right">{{ __('Status') }}</label>
               <div class="col-md-6">
-                <input id="status" type="text" class="form-control {{ $errors->has('status') ? ' is-invalid' : '' }}" name="status" value="{{ old('status') ? old('status') : title_case($course->_status->description) }}" >
-                @if ($errors->has('status'))
-                  <span class="invalid-feedback">
-                    <strong>{{ $errors->first('status') }}</strong>
-                  </span>
-                @endif
+                <div class="input-group mb-2 mr-sm-2">
+                  <select class="form-control {{ $errors->has('status') ? ' is-invalid' : '' }}" name="status" id="status" required>
+                    @foreach ($coursestatus as $coursestat)
+                      <option value="{{ __($coursestat->coursestatus_id) }}"
+                        @if (old('coursestatus') == $coursestat->coursestatus_id)
+                            selected 
+                        @endif
+                       >{{ __(title_case($coursestat->description)) }}</option>
+                    @endforeach
+                  </select>
+                  @if ($errors->has('status'))
+                    <span class="invalid-feedback">
+                      <strong>{{ $errors->first('status') }}</strong>
+                    </span>
+                  @endif
+                </div>
               </div>
             </div>
             <div class="form-group row">
@@ -94,7 +106,7 @@
             </div>
         </form>
     </div>
-  @component('course.components.actions', ['user' => $user])
+  @component('course.components.actions', ['course' => $course])
 
   @endcomponent
   </div>

@@ -48,12 +48,16 @@ Route::get('/home/user/{user}/pwd_change', 'UserController@changePassword')->nam
 Route::post('/home/user/{user}/pwd_change', 'UserController@handleChangePassword')->name('user_handle_change_password');
 
 Route::get('/home/course_status', 'CoursestatusController@list')->name('course_status');
+Route::get('/home/course_status/{coursestatus}', 'CoursestatusController@show')->name('course_status_show');
+Route::get('/home/course_status/{coursestatus}/update', 'CoursestatusController@update')->name('course_status_update');
+Route::post('/home/course_status/{coursestatus}/update', 'CoursestatusController@handleUpdate')->name('course_status_handle_update');
 
 Route::get('/home/course', 'CourseController@list')->name('course');
 Route::get('/home/course/add', 'CourseController@add')->name('course_add');
 Route::post('/home/course/add', 'CourseController@handleAdd')->name('course_handle_add');
 Route::get('/home/course/{course}', 'CourseController@show')->name('course_show');
 Route::get('/home/course/{course}/update', 'CourseController@update')->name('course_update');
+Route::post('/home/course/{course}/update', 'CourseController@handleUpdate')->name('course_handle_update');
 Route::get('/home/course/{course}/delete', 'CourseController@delete')->name('course_delete');
 
 Route::get('/home/usertype', 'UsertypeController@list')->name('usertype');

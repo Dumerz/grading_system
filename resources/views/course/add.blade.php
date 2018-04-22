@@ -11,15 +11,6 @@
     </li>
     <li href="" class="breadcrumb-item active">Add</li>
   </ol>
-@if ($errors->any())
-    <div class="alert alert-danger">
-        <ul>
-            @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-            @endforeach
-        </ul>
-    </div>
-@endif
   <div class="card mb-3">
     <div class="card-header">
       <i class="fa fa-user-plus"></i> Add Course

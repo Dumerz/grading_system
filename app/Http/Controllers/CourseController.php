@@ -11,6 +11,17 @@ use App\User;
 
 class CourseController extends Controller
 {
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('auth');
+        $this->middleware('activated');
+        $this->middleware('admin');
+    }
   /**
    * Get a validator for an incoming registration request.
    *
@@ -23,20 +34,24 @@ class CourseController extends Controller
     return Validator::make($data, [
       'name' => 'required|string|max:255|min:6|unique:courses,name',
       'description' => 'required|max:255|string',
-      'evaluator' => 'required|exists:users,id',
       'status' => 'required|exists:coursestatus,coursestatus_id'
     ]);
   }
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        $this->middleware('auth');
-        $this->middleware('create_course');
-    }
+  /**
+   * Get a validator for an incoming registration request.
+   *
+   * @param  array  $data
+   * @return \Illuminate\Contracts\Validation\Validator
+   */
+  protected function updateValidator(Course $course, array $data)
+  {
+
+    return Validator::make($data, [
+      'name' => 'required|string|max:255|min:6|unique:courses,name,'.$course->name,
+      'description' => 'required|max:255|string',
+      'status' => 'required|exists:coursestatus,coursestatus_id'
+    ]);
+  }
     /**
      * Show the users list.
      *
@@ -54,7 +69,8 @@ class CourseController extends Controller
      */
     public function show($id)
     {
-        return view('course.show', ['course' => Course::findOrFail($id)]);
+      $id = $this->is_digit($id);
+      return view('course.show', ['course' => Course::findOrFail($id)]);
     }
     /**
      * Show the course $course.
@@ -63,7 +79,9 @@ class CourseController extends Controller
      */
     public function update($id)
     {
-        return view('course.update', ['course' => Course::findOrFail($id)]);
+      $id = $this->is_digit($id);
+      $coursestatus = Coursestatus::all();
+      return view('course.update', ['course' => Course::findOrFail($id), 'coursestatus' => $coursestatus]);
     }
     /**
      * Show the course $course.
@@ -72,7 +90,8 @@ class CourseController extends Controller
      */
     public function delete($id)
     {
-        return view('course.delete', ['course' => Course::findOrFail($id)]);
+      $id = $this->is_digit($id);
+      return view('course.delete', ['course' => Course::findOrFail($id)]);
     }
   /**
    * Create a new user instance after a valid registration.
@@ -112,5 +131,49 @@ class CourseController extends Controller
     $course = $this->create($request->all());
     //$this->notifyUserCreate($user);
     return redirect()->route('course_show', $course->id)->with('status', 'Course successfully created.');
+  }
+  /**
+   * Create a new user instance after a valid registration.
+   *
+   * @param  array  $data
+   * @return \App\User
+   */
+  protected function edit($id, array $data)
+  {
+    $course = Course::find($id);
+    $course->name = Str::title($data['name']);
+    $course->description = Str::title($data['description']);
+    $course->status = $data['status'];
+
+    $course->save();
+
+    return $course;
+  }
+  /**
+   * Handle the user update.
+   *
+   * @return \Illuminate\Http\Response
+   */
+  public function handleUpdate($id, Request $request)
+  {
+    $id = $this->is_digit($id);
+    $course = Course::findOrFail($id);
+      $this->updateValidator($course, $request->all())->validate();
+      $this->edit($id, $request->all());
+      //$this->notifyUserUpdate($user);
+    return redirect()->route('course_show', $course->no)->with('status', 'Course successfully updated.');
+  }
+  /**
+  * Check Userstatus $id as digit.
+  * @param App\Usertype $id
+  * @param mixed $entry
+  * @return mixed $entry
+  */
+  protected function is_digit($entry)
+  {
+      if (!ctype_digit($entry)) {
+        $entry = -1;
+      }
+      return (int)$entry;
   }
 }
