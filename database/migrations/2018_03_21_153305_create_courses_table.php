@@ -18,6 +18,7 @@ class CreateCoursesTable extends Migration
             $table->string('name')->unique();
             $table->string('description');
             $table->integer('evaluator');
+            $table->foreign('evaluator')->references('id')->on('users')->onUpdate('cascade')->onDelete('restrict');
             $table->string('status');
             $table->foreign('status')->references('coursestatus_id')->on('coursestatus')->onUpdate('cascade')->onDelete('restrict');
             $table->timestamps();
@@ -31,6 +32,10 @@ class CreateCoursesTable extends Migration
      */
     public function down()
     {
+        Schema::table('courses', function ($table) {
+            $table->dropForeign(['evaluator']);
+            $table->dropForeign(['status']);
+        });
         Schema::dropIfExists('courses');
     }
 }

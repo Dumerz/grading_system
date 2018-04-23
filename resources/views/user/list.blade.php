@@ -27,6 +27,7 @@
             <thead>
               <tr>
                 <th><input type="checkbox" name=""></th>
+                <th>SN.</th>
                 <th>Name</th>
                 <th>Gender</th>
                 <th>Usertype</th>
@@ -36,9 +37,13 @@
               </tr>
             </thead>
             <tbody>
+            @php
+              $i = $users->firstItem();
+            @endphp
             @foreach ($users as $user)
               <tr>
                 <td><input type="checkbox" name=""></td>
+                <td>{{ $i }}</td>
                 <td><a href="{{ route('user_show', $user->id) }}">{{ __($user->name_full) }}</a></td>
                 <td>{{ __(title_case($user->gender))}}</td>
                 <td>{{ __(title_case($user->typeuser->description))}}</td>
@@ -46,6 +51,9 @@
                 <td>{{ $user->created_at->diffForHumans()}}</td>
                 <td>{{ $user->updated_at->diffForHumans()}}</td>
               </tr>
+              @php
+                $i++;
+              @endphp
             @endforeach
             </tbody>
             <tfoot>

@@ -7,7 +7,7 @@
       <a href="{{ route('home') }}">Dashboard</a>
     </li>
     <li class="breadcrumb-item">
-      <a href="{{ route('course') }}">Course</a>
+      <a href="{{ route('course_managed') }}">Course Managed</a>
     </li>
     <li class="breadcrumb-item active">Update</li>
   </ol>
@@ -15,10 +15,10 @@
   <div class="col-lg-9 col-md-12 mb-3">
     <div class="card mb-3">
       <div class="card-header">
-        <i class="fa fa-book"></i> Course Update
+        <i class="fa fa-book"></i> Update Course Managed
         </div>
       <div class="card-body">
-          <form method="POST" action="{{ route('course_handle_update', $course->id) }}">
+          <form method="POST" action="{{ route('course_managed_handle_update', $course->id) }}">
             @csrf
             <input type="hidden" name="id" id="id" value="{{ $course->id }}" readonly>
               <div class="form-group row">
@@ -37,23 +37,12 @@
               <div class="form-group row">
                 <label for="description" class="col-md-4 col-form-label text-md-right">{{ __('Description') }}</label>
                 <div class="col-md-6">
-                  <textarea id="description" type="text" class="form-control {{ $errors->has('description') ? ' is-invalid' : '' }}" name="description" rows="3">{{ old('description') ? old('description') : $course->description }}</textarea>
+                  <input id="description" type="text" class="form-control {{ $errors->has('description') ? ' is-invalid' : '' }}" name="description" value="{{ old('description') ? old('description') : $course->description }}" >
                   @if ($errors->has('description'))
                     <span class="invalid-feedback">
                       <strong>{{ $errors->first('description') }}</strong>
                     </span>
                   @endif
-                </div>
-              </div>
-              <div class="form-group row">
-                <label for="evaluator" class="col-md-4 col-form-label text-md-right">{{ __('Evaluator') }}</label>
-                <div class="col-md-6">
-                  <div class="input-group mb-2 mr-sm-2">
-                    <input id="evaluator" type="text" class="form-control" value="{{ $course->evaluator_user->name_full }}" readonly>
-                    <div class="input-group-append">
-                      <div class="input-group-text badge-success"><i class="fa fa-lock"></i></div>
-                    </div>
-                  </div>
                 </div>
               </div>
               <div class="form-group row">
@@ -112,7 +101,7 @@
       </div>
     </div>
   </div>
-  @component('course.components.actions', ['course' => $course])
+  @component('coursemanaged.components.actions', ['course' => $course])
 
   @endcomponent
 </div>

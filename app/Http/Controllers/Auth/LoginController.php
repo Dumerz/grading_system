@@ -42,7 +42,7 @@ class LoginController extends Controller
     {
         if ($user->status == 'USRSTAT001') {
         auth()->logout();
-            return back()->with('warning', 'You need to confirm your account. We have sent you an activation code, please check your email.');
+            return back()->with('warning', 'You need to confirm your account. We have sent you an activation code, please check your email. <a href="'. url('verify') .'">Resend verification code?</a>');
         }
         
         elseif ($user->status == 'USRSTAT003') {

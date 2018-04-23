@@ -7,20 +7,15 @@
       <a href="{{ route('home') }}">Dashboard</a>
     </li>
     <li class="breadcrumb-item">
-      <a href="{{ route('course') }}">Course</a>
+      <a href="{{ route('course_managed') }}">Course Managed</a>
     </li>
     <li href="" class="breadcrumb-item active">Delete</li>
   </ol>
-  @if (session('warning'))
-  <div class="alert alert-warning">
-      {{ session('warning') }}
-  </div>
-  @endif
   <div class="row">
     <div class="col-lg-9 col-md-12 mb-3">
       <div class="card mb-3">
         <div class="card-header">
-          <i class="fa fa-book"></i> Delete Course
+          <i class="fa fa-book"></i> Delete Course Managed
         </div>
         <div class="card-body">
           <div class="text-center">
@@ -53,7 +48,7 @@
         </div>
       </div>
     </div>
-  @component('course.components.info', ['course' => $course])
+  @component('coursemanaged.components.info', ['course' => $course])
 
   @endcomponent
   </div>

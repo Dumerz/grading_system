@@ -5,7 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Auth;
 
-class CanCreateCourse
+class CanManageCourse
 {
     /**
      * Handle an incoming request.

@@ -6,17 +6,21 @@
     <li class="breadcrumb-item">
       <a href="{{ route('home') }}">Dashboard</a>
     </li>
-    <li class="breadcrumb-item active">Courses</li>
+    <li class="breadcrumb-item active">Courses Managed</li>
   </ol>
   @if (session('status'))
     <div class="mx-auto alert alert-success">
       {{ session('status') }}
     </div>
+  @elseif (session('warning'))
+    <div class="mx-auto alert alert-warning">
+      {{ session('warning') }}
+    </div>
   @endif
   <div class="card mb-3">
     <div class="card-header">
-      <i class="fa fa-book"></i> Courses
-        <a href="{{ route('course_add') }}" class="btn-sm btn-success float-right">
+      <i class="fa fa-book"></i> Courses Managed
+        <a href="{{ route('course_managed_add') }}" class="btn-sm btn-success float-right">
         <i class="fa fa-plus"></i> 
         {{ __('Add New') }}
         </a>
@@ -38,7 +42,7 @@
             @foreach ($courses as $course)
               <tr>
                 <td><input type="checkbox" name=""></td>
-                <td><a href="{{ route('course_show', $course->id) }}">{{ __(ucfirst($course->name))}}</a></td>
+                <td><a href="{{ route('course_managed_show', $course->id) }}">{{ __(ucfirst($course->name))}}</a></td>
                  <td><a href="{{ route('user_profile_show', $course->evaluator_user->id) }}">{{ __(title_case($course->evaluator_user->name_full))}}</a></td>
                  <td>{{ __(title_case($course->_status->description))}}</td>
                 <td>{{ $course->created_at->diffForHumans() }}</td>

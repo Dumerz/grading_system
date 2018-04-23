@@ -7,7 +7,7 @@ use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 
-class Created extends Notification
+class Updated extends Notification
 {
     use Queueable;
 
@@ -44,8 +44,8 @@ class Created extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
-            ->subject('Course Created')   
-            ->markdown('mail.course.created',['url' => $this->url, 'course' => $this->course]);
+            ->subject('Course Updated')   
+            ->markdown('mail.course.updated',['url' => $this->url, 'course' => $this->course]);
     }
 
     /**

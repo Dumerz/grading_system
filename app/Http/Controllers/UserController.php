@@ -7,6 +7,7 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Database\QueryException;
 use App\User;
 use App\Usertype;
 use App\Userstatus;
@@ -234,7 +235,7 @@ class UserController extends Controller
         return redirect()->route('user_show', $user->id)->with('warning', 'You\'re unauthorized for this request.'); 
       }
       $this->updateValidator($id, $request->all())->validate();
-      $this->edit($id, $request->all());
+    $user = $this->edit($id, $request->all());
       $this->notifyUserUpdate($user);
     return redirect()->route('user_show', $user->id)->with('status', 'User successfully updated.');
   }
@@ -268,7 +269,11 @@ class UserController extends Controller
       }
       $this->deleteValidator($request->all())->validate();
       if (Hash::check($request['password'], Auth::user()->password)) {
+        try {
         $user->delete();
+        } catch (QueryException $e) {
+          return back()->with('warning', 'Unable to delete user because it is still referenced from another table.');
+        }
         $this->notifyUserDelete($user);
         return redirect()->route('user')->with('status', 'User successfully deleted.');
       }

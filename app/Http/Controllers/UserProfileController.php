@@ -126,7 +126,7 @@ class UserProfileController extends Controller
         return redirect()->route('user_profile_show', $user->id)->with('warning', 'You\'re unauthorized for this request.'); 
       }
       $this->updateValidator($id, $request->all())->validate();
-      $this->edit($id, $request->all());
+    $user = $this->edit($id, $request->all());
       $this->notifyUserUpdate($user);
     return redirect()->route('user_profile_show', $user->id)->with('status', 'User successfully updated.');
   }

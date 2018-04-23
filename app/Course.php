@@ -24,4 +24,14 @@ class Course extends Model
     {
         return $this->belongsTo('App\Coursestatus', 'status', 'coursestatus_id');
     }
+
+    public function periods()
+    {
+        return $this->hasMany('App\Courseperiods', 'course', 'id');
+    }
+
+    public function schemes()
+    {
+        return $this->hasMany('App\Courseschemes', 'course', 'id');
+    }
 }

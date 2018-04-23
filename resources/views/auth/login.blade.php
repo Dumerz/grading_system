@@ -11,7 +11,7 @@
             @endif
             @if (session('warning'))
                 <div class="card-login mx-auto alert alert-warning">
-                {{ session('warning') }}
+                {!! session('warning') !!}
                 </div>
             @endif
             <div class="card card-login mx-auto mt-5">

@@ -33,9 +33,9 @@
         </a>
           <ul class="sidenav-second-level collapse" id="collapseComponentsCourse">
             <li class="nav-item">
-              <a class="nav-link" href="">
+              <a class="nav-link" href="{{ route('course_managed') }}">
                 <i class="fa fa-fw fa-book"></i>
-                <span class="nav-link-text">My Courses</span>
+                <span class="nav-link-text">Courses Managed</span>
               </a>
             </li>
           </ul>

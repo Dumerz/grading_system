@@ -7,13 +7,13 @@
       <a href="{{ route('home') }}">Dashboard</a>
     </li>
     <li class="breadcrumb-item">
-      <a href="{{ route('course') }}">Courses</a>
+      <a href="{{ route('user') }}">Courses</a>
     </li>
     <li href="" class="breadcrumb-item active">Add</li>
   </ol>
   <div class="card mb-3">
     <div class="card-header">
-      <i class="fa fa-book"></i> Add Course
+      <i class="fa fa-user-plus"></i> Add Course
     </div>
     <div class="card-body">
       <form method="POST" action="{{ route('course_handle_add') }}">
@@ -35,7 +35,7 @@
           <label for="description" class="col-md-4 col-form-label text-md-right">{{ __('Description') }}</label>
           <div class="col-md-6">
             <div class="input-group mb-2 mr-sm-2">
-              <textarea class="form-control {{ $errors->has('description') ? ' is-invalid' : '' }}" name="description" id="description" rows="3" placeholder="Description">{{ old('description') }}</textarea>
+              <textarea class="form-control {{ $errors->has('description') ? ' is-invalid' : '' }}" name="description" id="description" rows="3" value="{{ old('description') }}" placeholder="Description"></textarea>
               @if ($errors->has('description'))
                 <span class="invalid-feedback">
                   <strong>{{ $errors->first('description') }}</strong>

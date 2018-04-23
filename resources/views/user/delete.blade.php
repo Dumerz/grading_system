@@ -11,6 +11,11 @@
     </li>
     <li href="" class="breadcrumb-item active">Delete</li>
   </ol>
+  @if (session('warning'))
+  <div class="alert alert-warning">
+      {{ session('warning') }}
+  </div>
+  @endif
   <div class="row">
     <div class="col-lg-9 col-md-12 mb-3">
       <div class="card mb-3">

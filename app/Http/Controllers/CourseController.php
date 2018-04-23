@@ -5,9 +5,16 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Rule;
+use Illuminate\Database\QueryException;
 use App\Course;
 use App\Coursestatus;
 use App\User;
+use App\Notifications\Course\Updated;
+use App\Notifications\Course\Deleted;
+use App\Notifications\Course\Created;
 
 class CourseController extends Controller
 {
@@ -34,6 +41,7 @@ class CourseController extends Controller
     return Validator::make($data, [
       'name' => 'required|string|max:255|min:6|unique:courses,name',
       'description' => 'required|max:255|string',
+      'evaluator' => 'required|integer|exists:users,id',
       'status' => 'required|exists:coursestatus,coursestatus_id'
     ]);
   }
@@ -47,9 +55,11 @@ class CourseController extends Controller
   {
 
     return Validator::make($data, [
-      'name' => 'required|string|max:255|min:6|unique:courses,name,'.$course->name,
       'description' => 'required|max:255|string',
-      'status' => 'required|exists:coursestatus,coursestatus_id'
+      'status' => 'required|exists:coursestatus,coursestatus_id',
+      'name' => [
+          'required','string','max:255','min:6',
+          Rule::unique('courses')->ignore($course->name, 'name')]
     ]);
   }
     /**
@@ -102,8 +112,8 @@ class CourseController extends Controller
   protected function create(array $data)
   {
     $course = Course::create([
-      'name' => Str::title($data['name']),
-      'description' => Str::title($data['description']),
+      'name' => Str::ucfirst($data['name']),
+      'description' => Str::ucfirst($data['description']),
       'evaluator' => $data['evaluator'],
       'status' => $data['status']
     ]);
@@ -121,6 +131,45 @@ class CourseController extends Controller
     return view('course.add', ['evaluators' => $evaluators, 'coursestatus' => $coursestatus]);
   }
   /**
+   * Get a validator for an incoming registration request.
+   *
+   * @param  array  $data
+   * @return \Illuminate\Contracts\Validation\Validator
+   */
+  protected function deleteValidator(array $data)
+  {
+      $messages = [
+          'regex'    => 'The :attribute complexity is not acceptable.'
+      ];
+
+    return Validator::make($data, [
+      'password' => 'required|min:8|regex:/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#\$%\^&\*]).{8,}$/'
+    ], $messages);
+  }
+  /**
+   * Handle the user update.
+   *
+   * @return \Illuminate\Http\Response
+   */
+  public function handleDelete($id, Request $request)
+  {
+    $id = $this->is_digit($id);
+    $course = Course::findOrFail($id);
+      $this->deleteValidator($request->all())->validate();
+      if (Hash::check($request['password'], Auth::user()->password)) {
+        try {
+          $course->delete();
+        } catch (QueryException $e) {
+          return back()->with('warning', 'Unable to delete course because it is still referenced from another table.');
+        }
+        $this->notifyCourseDelete($course);
+        return redirect()->route('course')->with('status', 'Course successfully deleted.');
+      }
+      else {
+        return back()->withErrors(['password' => 'I did\'nt recognize your password.']);
+      }
+  }
+  /**
    * Show the user add view.
    *
    * @return \Illuminate\Http\Response
@@ -128,9 +177,15 @@ class CourseController extends Controller
   public function handleAdd(Request $request)
   {
     $this->addValidator($request->all())->validate();
-    $course = $this->create($request->all());
-    //$this->notifyUserCreate($user);
-    return redirect()->route('course_show', $course->id)->with('status', 'Course successfully created.');
+    $user = User::find($request['evaluator']);
+    if(in_array($user->usertype, ["USRTYPE003", "USRTYPE002"])){
+      $course = $this->create($request->all());
+      $this->notifyCourseCreate($course);
+      return redirect()->route('course_show', $course->id)->with('status', 'Course successfully created.');
+    }
+    else {
+      return back()->withErrors(['evaluator' => 'The selected evaluator is invalid.']);
+    }
   }
   /**
    * Create a new user instance after a valid registration.
@@ -141,8 +196,8 @@ class CourseController extends Controller
   protected function edit($id, array $data)
   {
     $course = Course::find($id);
-    $course->name = Str::title($data['name']);
-    $course->description = Str::title($data['description']);
+    $course->name = Str::ucfirst($data['name']);
+    $course->description = Str::ucfirst($data['description']);
     $course->status = $data['status'];
 
     $course->save();
@@ -159,9 +214,9 @@ class CourseController extends Controller
     $id = $this->is_digit($id);
     $course = Course::findOrFail($id);
       $this->updateValidator($course, $request->all())->validate();
-      $this->edit($id, $request->all());
-      //$this->notifyUserUpdate($user);
-    return redirect()->route('course_show', $course->no)->with('status', 'Course successfully updated.');
+    $course = $this->edit($id, $request->all());
+      $this->notifyCourseUpdate($course);
+    return redirect()->route('course_show', $course->id)->with('status', 'Course successfully updated.');
   }
   /**
   * Check Userstatus $id as digit.
@@ -175,5 +230,23 @@ class CourseController extends Controller
         $entry = -1;
       }
       return (int)$entry;
+  }
+  protected function notifyCourseUpdate(Course $course)
+  {
+      $url = route('course_show', $course->id);
+      $receiver = User::find(Auth::user()->id);
+      $receiver->notify(new Updated($course, $url));
+  }
+  protected function notifyCourseCreate(Course $course)
+  {
+      $url = route('course_show', $course->id);
+      $receiver = User::find(Auth::user()->id);
+      $receiver->notify(new Created($course, $url));
+  }
+  protected function notifyCourseDelete(Course $course)
+  {
+      $url = route('course_show', $course->id);
+      $receiver = User::find(Auth::user()->id);
+      $receiver->notify(new Deleted($course));
   }
 }

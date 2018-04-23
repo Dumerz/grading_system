@@ -7,16 +7,16 @@
       <a href="{{ route('home') }}">Dashboard</a>
     </li>
     <li class="breadcrumb-item">
-      <a href="{{ route('course') }}">Courses</a>
+      <a href="{{ route('course_managed') }}">Courses Managed</a>
     </li>
     <li href="" class="breadcrumb-item active">Add</li>
   </ol>
   <div class="card mb-3">
     <div class="card-header">
-      <i class="fa fa-book"></i> Add Course
+      <i class="fa fa-book"></i> Add a Course to manage
     </div>
     <div class="card-body">
-      <form method="POST" action="{{ route('course_handle_add') }}">
+      <form method="POST" action="{{ route('course_managed_handle_add') }}">
       @csrf
         <div class="form-group row">
           <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('Name') }}</label>
@@ -39,27 +39,6 @@
               @if ($errors->has('description'))
                 <span class="invalid-feedback">
                   <strong>{{ $errors->first('description') }}</strong>
-                </span>
-              @endif
-            </div>
-          </div>
-        </div>
-        <div class="form-group row">
-          <label for="evaluator" class="col-md-4 col-form-label text-md-right">{{ __('Evaluator') }}</label>
-          <div class="col-md-6">
-            <div class="input-group mb-2 mr-sm-2">
-              <select class="form-control {{ $errors->has('evaluator') ? ' is-invalid' : '' }}" name="evaluator" id="evaluator" required>
-                @foreach ($evaluators as $evaluator)
-                  <option value="{{ __($evaluator->id) }}"
-                    @if (old('evaluator') == $evaluator->id)
-                        selected 
-                    @endif
-                   >{{ __(title_case($evaluator->name_full)) }}</option>
-                @endforeach
-              </select>
-              @if ($errors->has('evaluator'))
-                <span class="invalid-feedback">
-                  <strong>{{ $errors->first('evaluator') }}</strong>
                 </span>
               @endif
             </div>

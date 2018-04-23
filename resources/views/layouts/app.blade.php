@@ -13,7 +13,7 @@
     <!-- Styles -->
     <link href="{{ asset('vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
     <link href="{{ asset('css/sb-admin.min.css') }}" rel="stylesheet">
-    <link href="{{ asset('vendor/font-awesome/css/font-awesome.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('vendor/font-awesome/css/fontawesome-all.min.css') }}" rel="stylesheet" type="text/css">
 </head>
 <body class="bg-dark">
     <div id="app">
