@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\DB;
 use App\Course;
 use App\Coursestudent;
 use App\User;
@@ -39,7 +40,7 @@ class CourseStudentController extends Controller
     */
     public function add($id)
     {
-        $ratees = User::where('usertype', 'USRTYPE001')->orderBy('name_last', 'asc')->orderBy('name_first', 'asc')->orderBy('name_last', 'asc')->orderBy('name_suffix', 'asc')->get();
+        $students = User::where('usertype', 'USRTYPE001')->orderBy('name_last', 'asc')->orderBy('name_first', 'asc')->orderBy('name_last', 'asc')->orderBy('name_suffix', 'asc')->paginate(10);
         //$students
         return view('coursestudent.add', ['course' => $id, 'students' => $students]);
     }
@@ -85,7 +86,7 @@ class CourseStudentController extends Controller
             $student = Coursestudent::create([
               'student' => $stud,
               'course' => $id,
-              'status' => 1
+              'status' => 'CSSTUDSTAT001'
             ]);
         }
         //return $schemes;

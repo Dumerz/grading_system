@@ -9,13 +9,16 @@
     <li class="breadcrumb-item">
       <a href="{{ route('user') }}">Users</a>
     </li>
+    <li class="breadcrumb-item">
+      <a href="{{ route('user_show', $user->id) }}">{{ __($user->name_full) }}</a>
+    </li>
     <li href="" class="breadcrumb-item active">Change Password</li>
   </ol>
   <div class="row">
     <div class="col-lg-9 col-md-12 mb-3">
       <div class="card mb-3">
         <div class="card-header">
-          <i class="fa fa-key"></i> User Change Password
+          <i class="fa fa-key"></i> <a href="{{ route('user_show', $user->id) }}">{{ __($user->name_full) }}</a> / User Change Password
         </div>
         <div class="card-body">
           <form method="POST" action="{{ route('user_handle_change_password', $user->id) }}">

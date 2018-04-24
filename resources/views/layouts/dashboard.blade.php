@@ -26,6 +26,26 @@
           <span class="nav-link-text">Dashboard</span>
         </a>
       </li>
+      <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Users">
+        <a class="nav-link nav-link-collapse" data-toggle="collapse" href="#collapseComponentsMyCourse">
+          <i class="fas fa-fw fa-book"></i>
+          <span class="nav-link-text">My Courses</span>
+        </a>
+          <ul class="sidenav-second-level collapse" id="collapseComponentsMyCourse">
+            <li class="nav-item">
+              <a class="nav-link" href="{{ route('course_enrolled') }}">
+                <i class="fa fa-fw fa-book"></i>
+                <span class="nav-link-text">Courses Enrolled</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{ route('course_enrolled') }}">
+                <i class="fa fa-fw fa-book"></i>
+                <span class="nav-link-text">Courses Grades</span>
+              </a>
+            </li>
+          </ul>
+      </li>
       @if (Auth::user()->usertype == "USRTYPE002" || Auth::user()->usertype == "USRTYPE003" )
       <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Users">
         <a class="nav-link nav-link-collapse" data-toggle="collapse" href="#collapseComponentsCourse">

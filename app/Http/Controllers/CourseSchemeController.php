@@ -240,12 +240,12 @@ class CourseSchemeController extends Controller
       if ($course->evaluator == Auth::user()->id) {
         $this->addValidator($request->all())->validate();
         $count = Coursescheme::where('course', $id)->where('description', ucfirst($request['description']))->count();
-        if ($count = 0) {
+        if ($count < 1) {
           $scheme = $this->create($id, $request->all());
           return redirect()->route('course_managed_scheme', $scheme->course)->with('status', 'Scheme successfully created.');
         }
         else {
-          return back()->withErrors(['description' => 'Desciption must be unique.']);
+          return back()->withErrors(['description' => 'Description must be unique.']);
         }
       }
       else {
