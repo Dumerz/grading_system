@@ -17,7 +17,7 @@
   </div>
   @endif
   <div class="row">
-    <div class="col-lg-9 col-md-12 mb-3">
+    <div class="col-lg-8 col-md-12 mb-3">
       <div class="card mb-3">
         <div class="card-header">
           <i class="fa fa-book"></i> Delete Course
@@ -27,7 +27,7 @@
             <h4>You are about to delete <strong>{{ $course->name }}</strong>?</h4>
             <p>Note: After deleting, course information cannot be restored. Enter your password to continue deleting the course.</p>
           </div>
-          <form method="POST" action="{{ route('course_managed_handle_delete', $course->id) }}">
+          <form method="POST" action="{{ route('course_handle_delete', $course->id) }}">
           @csrf
             <div class="form-group row">
               <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('Password') }}</label>

@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Coursestudent extends Model
+class Coursescheme extends Model
 {
     /**
      * The primary key for the model.
@@ -17,22 +17,25 @@ class Coursestudent extends Model
      *
      * @var string
      */
-    protected $table = 'coursestudents';
+    protected $table = 'courseschemes';
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-        'course', 'student', 'status'
+        'description', 'course', 'amount'
     ];
-
-    public function _user()
+    /**
+     * Get the route key for the model.
+     *
+     * @return string
+     */
+    public function getRouteKeyName()
     {
-        return $this->belongsTo('App\User', 'student', 'id');
+        return 'scheme';
     }
-
-    public function _course()
+    public function course()
     {
         return $this->belongsTo('App\Course', 'course', 'id');
     }

@@ -30,28 +30,35 @@
           <table class="table" id="dataTable" width="100%" cellspacing="0">
             <thead>
               <tr>
-                <th><input type="checkbox" name=""></th>
+                <th>SN.</th>
                 <th>Course Name</th>
-                <th>Rater</th>
+                <th class="text-center">Ratees</th>
+                <th class="text-center">Periods</th>
+                <th class="text-center">Schemes</th>
                 <th>Status</th>
-                <th>Date created</th>
-                <th>Date last modified</th>
               </tr>
             </thead>
             <tbody>
+            @php
+              $i = $courses->firstItem();
+            @endphp
             @foreach ($courses as $course)
               <tr>
-                <td><input type="checkbox" name=""></td>
+                <td>{{ $i }}</td>
                 <td><a href="{{ route('course_managed_show', $course->id) }}">{{ __(ucfirst($course->name))}}</a></td>
-                 <td><a href="{{ route('user_profile_show', $course->evaluator_user->id) }}">{{ __(title_case($course->evaluator_user->name_full))}}</a></td>
+                 <td class="text-center"><a href="{{ route('course_managed_student', $course->id ) }}">{{ __($course->total_students) }}</a></td>
+                 <td class="text-center"><a href="{{ route('course_managed_period', $course->id ) }}">{{ __($course->total_periods) }}</a></td>
+                 <td class="text-center"><a href="{{ route('course_managed_scheme', $course->id ) }}">{{ __($course->total_schemes) }}</a></td>
                  <td>{{ __(title_case($course->_status->description))}}</td>
-                <td>{{ $course->created_at->diffForHumans() }}</td>
-                <td>{{ $course->updated_at->diffForHumans() }}</td>
               </tr>
+              @php
+                $i++;
+              @endphp
             @endforeach
             </tbody>
             <tfoot>
-              <div class="row m-0">
+              <div class="row m-3">
+              <h6 class="pt-2">Showing item <strong>{{ $courses->firstItem() }}</strong> to <strong>{{ $courses->lastItem() }}</strong> of <strong>{{ $courses->total() }}</strong> records</h6>
               {{ $courses->links('vendor.pagination.bootstrap-4') }}
               </div>
             </tfoot>

@@ -19,7 +19,8 @@ class CreateCoursestudentTable extends Migration
             $table->foreign('course')->references('id')->on('courses')->onUpdate('cascade')->onDelete('restrict');
             $table->integer('student');
             $table->foreign('student')->references('id')->on('users')->onUpdate('cascade')->onDelete('restrict');
-            $table->integer('status');
+            $table->string('status');
+            $table->foreign('status')->references('coursestudentstatus_id')->on('coursestudentstatus')->onUpdate('cascade')->onDelete('restrict');
             $table->timestamps();
         });
     }

@@ -7,7 +7,10 @@
       <a href="{{ route('home') }}">Dashboard</a>
     </li>
     <li class="breadcrumb-item">
-      <a href="{{ route('course_managed') }}">Course Managed</a>
+      <a href="{{ route('course_managed_show', $course->id) }}">Course</a>
+    </li>
+    <li class="breadcrumb-item active">
+      <a href="{{ route('course_managed_period', $course->id) }}">Periods</a>
     </li>
     <li href="" class="breadcrumb-item active">Delete</li>
   </ol>
@@ -17,17 +20,17 @@
   </div>
   @endif
   <div class="row">
-    <div class="col-lg-8 col-md-12 mb-3">
+    <div class="col-lg-9 col-md-12 mb-3">
       <div class="card mb-3">
         <div class="card-header">
-          <i class="fa fa-book"></i> Delete Course Managed
+          <i class="fa fa-calendar"></i> <a href="{{ route('course_managed_show', $course->id) }}">{{ __($course->name) }}</a> / <a href="{{ route('course_managed_period', $course->id) }}"> Periods</a> / <a href="{{ route('course_managed_period_show', ['course' => $course->id, 'period' => $period->id]) }}"> {{ __(title_case($period->description))}}</a> / Delete Period
         </div>
         <div class="card-body">
           <div class="text-center">
-            <h4>You are about to delete <strong>{{ $course->name }}</strong>?</h4>
-            <p>Note: After deleting, course information cannot be restored. Enter your password to continue deleting the course.</p>
+            <h4>You are about to delete period <strong>{{ $period->description }}</strong> from <strong>{{ $course->name }}</strong>?</h4>
+            <p>Note: After deleting, period information cannot be restored. Enter your password to continue deleting the period.</p>
           </div>
-          <form method="POST" action="{{ route('course_managed_handle_delete', $course->id) }}">
+          <form method="POST" action="{{ route('course_managed_period_handle_delete', ['course' => $course->id, 'period' => $period->id]) }}">
           @csrf
             <div class="form-group row">
               <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('Password') }}</label>
@@ -45,7 +48,7 @@
             <div class="form-group row mb-0">
                 <div class="col-md-6 offset-md-4">
                     <button type="submit" class="btn btn-danger">
-                        {{ __('Delete Course') }}
+                        {{ __('Delete Period') }}
                     </button>
                 </div>
             </div>
@@ -53,7 +56,7 @@
         </div>
       </div>
     </div>
-  @component('coursemanaged.components.info', ['course' => $course])
+  @component('courseperiod.components.actions', ['course' => $course, 'period' => $period])
 
   @endcomponent
   </div>

@@ -27,11 +27,31 @@ class Course extends Model
 
     public function periods()
     {
-        return $this->hasMany('App\Courseperiods', 'course', 'id');
+        return $this->hasMany('App\Courseperiod', 'course', 'id');
+    }
+
+    public function getTotalPeriodsAttribute()
+    {
+        return $this->hasMany('App\Courseperiod', 'course', 'id')->count();
     }
 
     public function schemes()
     {
-        return $this->hasMany('App\Courseschemes', 'course', 'id');
+        return $this->hasMany('App\Coursescheme', 'course', 'id');
+    }
+
+    public function getTotalSchemesAttribute()
+    {
+        return $this->hasMany('App\Coursescheme', 'course', 'id')->count();
+    }
+
+    public function students()
+    {
+        return $this->hasMany('App\Coursestudent', 'course', 'id');
+    }
+
+    public function getTotalStudentsAttribute()
+    {
+        return $this->hasMany('App\Coursestudent', 'course', 'id')->count();
     }
 }

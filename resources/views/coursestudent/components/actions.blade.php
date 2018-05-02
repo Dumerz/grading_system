@@ -4,17 +4,17 @@
           <i class="fas fa-fw fa-sliders-h"></i> Actions
         </div>
         <div class="card-body">
-          <a href="{{ route('course_add') }}" >
+          <a href="{{ route('course_managed_add') }}" >
           <i class="fa fa-plus"></i> 
-          {{ __('Add new course') }}
+          {{ __('Add Course') }}
           </a>
           <hr/>
-          <a href="{{ route('course_update', $course->id) }}" >
+          <a href="{{ route('course_managed_update', $course->id) }}" >
           <i class="fa fa-edit"></i> 
-          {{ __('Update course') }}
+          {{ __('Update Course') }}
           </a>
           <hr/>
-          <a class="text-danger" href="{{ route('course_delete', $course->id) }}" >
+          <a class="text-danger" href="{{ route('course_managed_delete', $course->id) }}" >
           <i class="fa fa-times"></i> 
           {{ __('Delete course') }}
           </a>

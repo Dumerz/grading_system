@@ -16,24 +16,31 @@
           <table class="table" id="dataTable" width="100%" cellspacing="0">
             <thead>
               <tr>
-                <th><input type="checkbox" name=""></th>
+                <th>SN.</th>
                 <th>Userstatus</th>
                 <th>Date created</th>
                 <th>Date last modified</th>
               </tr>
             </thead>
             <tbody>
+            @php
+              $i = $userstatus->firstItem();
+            @endphp
             @foreach ($userstatus as $userstat)
               <tr>
-                <td><input type="checkbox" name=""></td>
+                <td>{{ $i }}</td>
                 <td><a href="{{ route('userstatus_show', $userstat->no) }}">{{ __(title_case($userstat->description))}}</td>
                 <td>{{ __($userstat->created_at->diffForHumans()) }}</td>
                 <td>{{ __($userstat->updated_at->diffForHumans()) }}</td>
               </tr>
+              @php
+                $i++;
+              @endphp
             @endforeach
             </tbody>
             <tfoot>
-              <div class="row m-0">
+              <div class="row m-3">
+              <h6 class="pt-2">Showing item <strong>{{ $userstatus->firstItem() }}</strong> to <strong>{{ $userstatus->lastItem() }}</strong> of <strong>{{ $userstatus->total() }}</strong> records</h6>
               {{ $userstatus->links('vendor.pagination.bootstrap-4') }}
               </div>
             </tfoot>

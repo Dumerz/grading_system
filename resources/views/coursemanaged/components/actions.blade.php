@@ -14,6 +14,21 @@
           {{ __('Update Course') }}
           </a>
           <hr/>
+          <a href="{{ route('course_managed_period', $course->id) }}" >
+          <i class="fa fa-calendar"></i> 
+          {{ __('Show Periods') }}
+          </a>
+          <hr/>
+          <a href="{{ route('course_managed_scheme', $course->id) }}" >
+          <i class="fa fa-chart-pie"></i> 
+          {{ __('Show Schemes') }}
+          </a>
+          <hr/>
+          <a href="{{ route('course_managed_student', $course->id) }}" >
+          <i class="fa fa-user"></i> 
+          {{ __('Show Ratees') }}
+          </a>
+          <hr/>
           <a class="text-danger" href="{{ route('course_managed_delete', $course->id) }}" >
           <i class="fa fa-times"></i> 
           {{ __('Delete course') }}

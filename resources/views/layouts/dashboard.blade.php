@@ -26,6 +26,7 @@
           <span class="nav-link-text">Dashboard</span>
         </a>
       </li>
+      @if (Auth::user()->usertype == "USRTYPE002" || Auth::user()->usertype == "USRTYPE003" )
       <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Users">
         <a class="nav-link nav-link-collapse" data-toggle="collapse" href="#collapseComponentsCourse">
           <i class="fas fa-fw fa-book"></i>
@@ -40,6 +41,8 @@
             </li>
           </ul>
       </li>
+      @endif
+      @if (Auth::user()->usertype == "USRTYPE003" )
       <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Components">
         <a class="nav-link nav-link-collapse" data-toggle="collapse" href="#collapseComponentsSite">
           <i class="fas fa-fw fa-sliders-h"></i>
@@ -78,6 +81,7 @@
           </li>
         </ul>
       </li>
+      @endif
     </ul>
     <ul class="navbar-nav sidenav-toggler">
       <li class="nav-item">

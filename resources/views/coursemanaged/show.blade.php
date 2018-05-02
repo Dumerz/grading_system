@@ -43,6 +43,18 @@
                   <td><a href="{{ route('user_profile_show', $course->evaluator_user->id ) }}">{{ __(title_case($course->evaluator_user->name_full))}}</a></td>
                 </tr>
                 <tr>
+                  <td>No of Ratees</td>
+                  <td><a href="{{ route('course_managed_student', $course->id ) }}">{{ __($course->total_students) }} {{ __(str_plural('student', $course->total_students)) }}</a></td>
+                </tr>
+                <tr>
+                  <td>No of Periods</td>
+                  <td><a href="{{ route('course_managed_period', $course->id ) }}">{{ __($course->total_periods) }} {{ __(str_plural('period', $course->total_periods)) }}</a></td>
+                </tr>
+                <tr>
+                  <td>No of Schemes</td>
+                  <td><a href="{{ route('course_managed_scheme', $course->id ) }}">{{ __($course->total_schemes) }} {{ __(str_plural('scheme', $course->total_schemes)) }}</a></td>
+                </tr>
+                <tr>
                   <td>Status</td>
                   <td>{{ __(title_case($course->_status->description))}}</td>
                 </tr>

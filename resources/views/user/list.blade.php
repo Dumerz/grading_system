@@ -26,7 +26,6 @@
           <table class="table" id="dataTable" width="100%" cellspacing="0">
             <thead>
               <tr>
-                <th><input type="checkbox" name=""></th>
                 <th>SN.</th>
                 <th>Name</th>
                 <th>Gender</th>
@@ -42,7 +41,6 @@
             @endphp
             @foreach ($users as $user)
               <tr>
-                <td><input type="checkbox" name=""></td>
                 <td>{{ $i }}</td>
                 <td><a href="{{ route('user_show', $user->id) }}">{{ __($user->name_full) }}</a></td>
                 <td>{{ __(title_case($user->gender))}}</td>
@@ -57,7 +55,7 @@
             @endforeach
             </tbody>
             <tfoot>
-              <div class="row m-0">
+              <div class="row m-3">
                 <h6 class="pt-2">Showing item <strong>{{ $users->firstItem() }}</strong> to <strong>{{ $users->lastItem() }}</strong> of <strong>{{ $users->total() }}</strong> records</h6>
                 {{ $users->links('vendor.pagination.bootstrap-4') }}
               </div>

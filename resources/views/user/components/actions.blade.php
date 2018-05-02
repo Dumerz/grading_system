@@ -8,12 +8,13 @@
           <i class="fa fa-user-plus"></i> 
           {{ __('Add new user') }}
           </a>
+        @if($user->usertype != 'USRTYPE003' || $user->id == Auth::user()->id)
           <hr/>
           <a href="{{ route('user_update', $user->id) }}" >
           <i class="fa fa-edit"></i> 
           {{ __('Update user information') }}
           </a>
-        @if($user->usertype != 'USRTYPE003')
+        @elseif($user->usertype != 'USRTYPE003')
           <hr/>
           <a href="{{ route('user_change_password', $user->id) }}" >
           <i class="fa fa-key"></i> 

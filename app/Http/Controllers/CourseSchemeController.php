@@ -9,9 +9,9 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Database\QueryException;
 use App\Course;
-use App\Courseperiod;
+use App\Coursescheme;
 
-class CoursePeriodController extends Controller
+class CourseSchemeController extends Controller
 {
     /**
      * Create a new controller instance.
@@ -29,15 +29,15 @@ class CoursePeriodController extends Controller
      * @param App\Course
      * @return \Illuminate\Http\Response
      */
-    public function show($id, $period)
+    public function show($id, $scheme)
     {
       $id = $this->is_digit($id);
       $course = Course::findOrFail($id);      
       if ($course->evaluator == Auth::user()->id) {
-        $period = $this->is_digit($period);
-        $periods = Courseperiod::findOrFail($period);
-          if ($periods->course == $course->id) {
-            return view('courseperiod.show', ['course' => $course, 'period' => $periods]);
+        $scheme = $this->is_digit($scheme);
+        $schemes = Coursescheme::findOrFail($scheme);
+          if ($schemes->course == $course->id) {
+            return view('coursescheme.show', ['course' => $course, 'scheme' => $schemes]);
           }
           else {
             abort(404);
@@ -52,15 +52,15 @@ class CoursePeriodController extends Controller
      * @param App\Course
      * @return \Illuminate\Http\Response
      */
-    public function delete($id, $period)
+    public function delete($id, $scheme)
     {
       $id = $this->is_digit($id);
       $course = Course::findOrFail($id);     
       if ($course->evaluator == Auth::user()->id) {
-        $period = $this->is_digit($period);
-        $periods = Courseperiod::findOrFail($period);
-          if ($periods->course == $course->id) {
-            return view('courseperiod.delete', ['course' => $course, 'period' => $periods]);
+        $scheme = $this->is_digit($scheme);
+        $schemes = Coursescheme::findOrFail($scheme);
+          if ($schemes->course == $course->id) {
+            return view('coursescheme.delete', ['course' => $course, 'scheme' => $schemes]);
           }
           else {
             abort(404);
@@ -104,15 +104,15 @@ class CoursePeriodController extends Controller
      * @param App\Course
      * @return \Illuminate\Http\Response
      */
-    public function update($id, $period)
+    public function update($id, $scheme)
     {
       $id = $this->is_digit($id);
       $course = Course::findOrFail($id);      
       if ($course->evaluator == Auth::user()->id) {
-        $period = $this->is_digit($period);
-        $periods = Courseperiod::findOrFail($period);
-          if ($periods->course == $course->id) {
-            return view('courseperiod.update', ['course' => $course, 'period' => $periods]);
+        $scheme = $this->is_digit($scheme);
+        $schemes = Coursescheme::findOrFail($scheme);
+          if ($schemes->course == $course->id) {
+            return view('coursescheme.update', ['course' => $course, 'scheme' => $schemes]);
           }
           else {
             abort(404);
@@ -129,29 +129,35 @@ class CoursePeriodController extends Controller
      */
     protected function edit($id, array $data)
     {
-      $period = Courseperiod::find($id);
-      $period->description = Str::ucfirst($data['description']);
+      $scheme = Coursescheme::find($id);
+      $scheme->description = Str::ucfirst($data['description']);
 
-      $period->save();
+      $scheme->save();
 
-      return $period;
+      return $scheme;
     }
     /**
      * Show the course $course.
      * @param App\Course
      * @return \Illuminate\Http\Response
      */
-    public function handleUpdate($id, $period, Request $request)
+    public function handleUpdate($id, $scheme, Request $request)
     {
       $id = $this->is_digit($id);
       $course = Course::findOrFail($id);      
       if ($course->evaluator == Auth::user()->id) {
-        $period = $this->is_digit($period);
-        $periods = Courseperiod::findOrFail($period);
-          if ($periods->course == $course->id) {
+        $scheme = $this->is_digit($scheme);
+        $schemes = Coursescheme::findOrFail($scheme);
+          if ($schemes->course == $course->id) {
             $this->updateValidator($request->all())->validate();
-            $periods = $this->edit($period, $request->all());
-            return redirect()->route('course_managed_period_show', ['course' => $course->id, 'period' => $periods->id])->with('status', 'Course period successfully updated.');
+            $count = Coursescheme::where('course', $id)->where('description', ucfirst($request['description']))->count();
+            if ($count = 0) {
+              $schemes = $this->edit($scheme, $request->all());
+              return redirect()->route('course_managed_scheme_show', ['course' => $course->id, 'scheme' => $schemes->id])->with('status', 'Course scheme successfully updated.');
+            }
+            else {
+              return back()->withErrors(['description' => 'Desciption must be unique.']);
+            }
           }
           else {
             abort(404);
@@ -166,22 +172,22 @@ class CoursePeriodController extends Controller
      * @param App\Course
      * @return \Illuminate\Http\Response
      */
-    public function handleDelete($id, $period, Request $request)
+    public function handleDelete($id, $scheme, Request $request)
     {
       $id = $this->is_digit($id);
       $course = Course::findOrFail($id);      
       if ($course->evaluator == Auth::user()->id) {
-        $period = $this->is_digit($period);
-        $periods = Courseperiod::findOrFail($period);
-          if ($periods->course == $course->id) {
+        $scheme = $this->is_digit($scheme);
+        $schemes = Coursescheme::findOrFail($scheme);
+          if ($schemes->course == $course->id) {
             $this->deleteValidator($request->all())->validate();
             if (Hash::check($request['password'], Auth::user()->password)) {
               try {
-                $periods->delete();
+                $schemes->delete();
               } catch (QueryException $e) {
-                return back()->with('warning', 'Unable to delete period because it is still referenced from another table.');
+                return back()->with('warning', 'Unable to delete scheme because it is still referenced from another table.');
               }
-              return redirect()->route('course_managed_period', $course->id)->with('status', 'Period successfully deleted.');
+              return redirect()->route('course_managed_scheme', $course->id)->with('status', 'Scheme successfully deleted.');
             }
             else {
               return back()->withErrors(['password' => 'I did\'nt recognize your password.']);
@@ -203,7 +209,7 @@ class CoursePeriodController extends Controller
     public function add($id)
     {
       $id = $this->is_digit($id);
-      return view('courseperiod.add', ['course' => Course::findOrFail($id)]);
+      return view('coursescheme.add', ['course' => Course::findOrFail($id)]);
     }
     /**
      * Show the users list.
@@ -215,68 +221,75 @@ class CoursePeriodController extends Controller
       $id = $this->is_digit($id);
       $course = Course::findOrFail($id);
       if ($course->evaluator == Auth::user()->id) {
-        return view('courseperiod.list', ['course' => $course, 'periods' => Courseperiod::where('course', $id)->paginate(10)]);
+        return view('coursescheme.list', ['course' => $course, 'schemes' => Coursescheme::where('course', $id)->paginate(10)]);
       }
       else {
         return redirect()->route('course_managed')->with('warning', 'Whoops! You\'re unauthorized to access that page!');
       }
 
     }
-	/**
-	* Show the user add view.
-	*
-	* @return \Illuminate\Http\Response
-	*/
-	public function handleAdd($id, Request $request)
-	{
+    /**
+    * Show the user add view.
+    *
+    * @return \Illuminate\Http\Response
+    */
+    public function handleAdd($id, Request $request)
+    {
       $id = $this->is_digit($id);
       $course = Course::findOrFail($id);
       if ($course->evaluator == Auth::user()->id) {
-		$this->addValidator($request->all())->validate();
-		$period = $this->create($id, $request->all());
-		return redirect()->route('course_managed_period', $period->course)->with('status', 'Period successfully created.');
+        $this->addValidator($request->all())->validate();
+        $count = Coursescheme::where('course', $id)->where('description', ucfirst($request['description']))->count();
+        if ($count = 0) {
+          $scheme = $this->create($id, $request->all());
+          return redirect()->route('course_managed_scheme', $scheme->course)->with('status', 'Scheme successfully created.');
+        }
+        else {
+          return back()->withErrors(['description' => 'Desciption must be unique.']);
+        }
       }
       else {
         return redirect()->route('course_managed')->with('warning', 'Whoops! You\'re unauthorized for that request!');
       }
-	}
-	  /**
-	   * Get a validator for an incoming registration request.
-	   *
-	   * @param  array  $data
-	   * @return \Illuminate\Contracts\Validation\Validator
-	   */
-	  protected function addValidator(array $data)
-	  {
-	    return Validator::make($data, [
-	      'description' => 'required|max:255|string'
-	    ]);
-	  }
-	/**
-	* Create a new user instance after a valid registration.
-	*
-	* @param  array  $data
-	* @return \App\User
-	*/
-	protected function create($id, array $data)
-	{
-		$periods = Courseperiod::create([
-		  'description' => Str::ucfirst($data['description']),
-		  'course' => $id
-		]);
-		return $periods;
-	}
-	/**
-	* Check Userstatus $id as digit.
-	* @param App\Usertype $id
-	* @param mixed $entry
-	* @return mixed $entry
-	*/
-	protected function is_digit($entry)
-	{
-	  if (!ctype_digit($entry)) {
-	    $entry = -1;
-	  }
-	  return (int)$entry;
-	}
+    }
+      /**
+       * Get a validator for an incoming registration request.
+       *
+       * @param  array  $data
+       * @return \Illuminate\Contracts\Validation\Validator
+       */
+      protected function addValidator(array $data)
+      {
+        return Validator::make($data, [
+          'description' => 'required|max:255|string'
+        ]);
+      }
+    /**
+    * Create a new user instance after a valid registration.
+    *
+    * @param  array  $data
+    * @return \App\User
+    */
+    protected function create($id, array $data)
+    {
+        $schemes = Coursescheme::create([
+          'description' => Str::ucfirst($data['description']),
+          'course' => $id,
+          'amount' => 0.25
+        ]);
+        return $schemes;
+    }
+    /**
+    * Check Userstatus $id as digit.
+    * @param App\Usertype $id
+    * @param mixed $entry
+    * @return mixed $entry
+    */
+    protected function is_digit($entry)
+    {
+      if (!ctype_digit($entry)) {
+        $entry = -1;
+      }
+      return (int)$entry;
+    }
 }

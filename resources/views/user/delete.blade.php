@@ -17,7 +17,7 @@
   </div>
   @endif
   <div class="row">
-    <div class="col-lg-9 col-md-12 mb-3">
+    <div class="col-lg-8 col-md-12 mb-3">
       <div class="card mb-3">
         <div class="card-header">
           <i class="fa fa-user-times"></i> Delete User
@@ -53,7 +53,7 @@
         </div>
       </div>
     </div>
-  @component('user.components.actions', ['user' => $user])
+  @component('user.components.info', ['user' => $user])
 
   @endcomponent
   </div>

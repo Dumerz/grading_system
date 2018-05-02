@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Courseperiods extends Model
+class Courseperiod extends Model
 {
     /**
      * The primary key for the model.
@@ -25,5 +25,18 @@ class Courseperiods extends Model
      */
     protected $fillable = [
         'description', 'course'
-    ];    
+    ];
+    /**
+     * Get the route key for the model.
+     *
+     * @return string
+     */
+    public function getRouteKeyName()
+    {
+        return 'period';
+    }
+    public function course()
+    {
+        return $this->belongsTo('App\Course', 'course', 'id');
+    }
 }
