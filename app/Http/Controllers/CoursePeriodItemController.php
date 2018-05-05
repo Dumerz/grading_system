@@ -26,29 +26,36 @@ class CoursePeriodItemController extends Controller
         $this->middleware('activated');
         $this->middleware('manage_course');
     }
-    // /**
-    //  * Show the course $course.
-    //  * @param App\Course
-    //  * @return \Illuminate\Http\Response
-    //  */
-    // public function show($id, $period)
-    // {
-    //   $id = $this->is_digit($id);
-    //   $course = Course::findOrFail($id);      
-    //   if ($course->evaluator == Auth::user()->id) {
-    //     $period = $this->is_digit($period);
-    //     $periods = Courseperiod::findOrFail($period);
-    //       if ($periods->course == $course->id) {
-    //         return view('courseperiod.show', ['course' => $course, 'period' => $periods]);
-    //       }
-    //       else {
-    //         abort(404);
-    //       }
-    //   }
-    //   else {
-    //     return redirect()->route('course_managed')->with('warning', 'Whoops! You\'re unauthorized to access that page!');
-    //   }
-    // }
+    /**
+     * Show the course $course.
+     * @param App\Course
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id, $period, $item)
+    {
+      $id = $this->is_digit($id);
+      $course = Course::findOrFail($id);     
+      if ($course->evaluator == Auth::user()->id) {
+        $period = $this->is_digit($period);
+        $periods = Courseperiod::where('course', $id)->where('id', $period)->count();
+          if($periods == 1) {
+            $item =  $this->is_digit($item);
+            $items = Courseitem::where('period', $period)->where('id', $item)->count();
+              if($items == 1){
+                return view('courseperioditem.show', ['item' => Courseitem::find($item)]);
+              }
+              else {
+                abort(404);
+              }
+          }
+          else {
+            abort(404);
+          }
+      }
+      else {
+        return redirect()->route('course_managed')->with('warning', 'Whoops! You\'re unauthorized to access that page!');
+      }
+    }
     /**
      * Show the course $course.
      * @param App\Course
@@ -79,97 +86,112 @@ class CoursePeriodItemController extends Controller
         return redirect()->route('course_managed')->with('warning', 'Whoops! You\'re unauthorized to access that page!');
       }
     }
-    // /**
-    //  * Get a validator for an incoming registration request.
-    //  *
-    //  * @param  array  $data
-    //  * @return \Illuminate\Contracts\Validation\Validator
-    //  */
-    // protected function updateValidator(array $data)
-    // {
+    /**
+     * Get a validator for an incoming registration request.
+     *
+     * @param  array  $data
+     * @return \Illuminate\Contracts\Validation\Validator
+     */
+    protected function updateValidator(array $data)
+    {
 
-    //   return Validator::make($data, [
-    //     'description' => 'required|max:255|string'
-    //   ]);
-    // }
-    // /**
-    //  * Get a validator for an incoming registration request.
-    //  *
-    //  * @param  array  $data
-    //  * @return \Illuminate\Contracts\Validation\Validator
-    //  */
-    // protected function deleteValidator(array $data)
-    // {
-    //     $messages = [
-    //         'regex'    => 'The :attribute complexity is not acceptable.'
-    //     ];
+      return Validator::make($data, [
+        'description' => 'required|max:255|string',
+        'scheme' => 'required|max:255|exists:courseschemes,id'
+      ]);
+    }
+    /**
+     * Get a validator for an incoming registration request.
+     *
+     * @param  array  $data
+     * @return \Illuminate\Contracts\Validation\Validator
+     */
+    protected function deleteValidator(array $data)
+    {
+        $messages = [
+            'regex'    => 'The :attribute complexity is not acceptable.'
+        ];
 
-    //   return Validator::make($data, [
-    //     'password' => 'required|min:8|regex:/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#\$%\^&\*]).{8,}$/'
-    //   ], $messages);
-    // }
-    // /**
-    //  * Show the course $course.
-    //  * @param App\Course
-    //  * @return \Illuminate\Http\Response
-    //  */
-    // public function update($id, $period)
-    // {
-    //   $id = $this->is_digit($id);
-    //   $course = Course::findOrFail($id);      
-    //   if ($course->evaluator == Auth::user()->id) {
-    //     $period = $this->is_digit($period);
-    //     $periods = Courseperiod::findOrFail($period);
-    //       if ($periods->course == $course->id) {
-    //         return view('courseperiod.update', ['course' => $course, 'period' => $periods]);
-    //       }
-    //       else {
-    //         abort(404);
-    //       }
-    //   }
-    //   else {
-    //     return redirect()->route('course_managed')->with('warning', 'Whoops! You\'re unauthorized to access that page!');
-    //   }
-    // }
-    // /**
-    //  * Show the course $course.
-    //  * @param App\Course
-    //  * @return \Illuminate\Http\Response
-    //  */
-    // protected function edit($id, array $data)
-    // {
-    //   $period = Courseperiod::find($id);
-    //   $period->description = Str::ucfirst($data['description']);
+      return Validator::make($data, [
+        'password' => 'required|min:8|regex:/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#\$%\^&\*]).{8,}$/'
+      ], $messages);
+    }
+    /**
+     * Show the course $course.
+     * @param App\Course
+     * @return \Illuminate\Http\Response
+     */
+    public function update($id, $period, $item)
+    {
+      $id = $this->is_digit($id);
+      $course = Course::findOrFail($id);      
+      if ($course->evaluator == Auth::user()->id) {
+        $period = $this->is_digit($period);
+        $periods = Courseperiod::where('course', $id)->where('id', $period)->count();
+          if($periods == 1) {
+            $item =  $this->is_digit($item);
+            $items = Courseitem::where('period', $periods)->where('id', $item)->count();
+              if($items == 1){
+                return view('courseperioditem.update', ['item' => Courseitem::find($item), 'schemes' => Coursescheme::where('course',$id)->get()]);
+              }
+              else {
+                abort(404);
+              }
+          }
+          else {
+            abort(404);
+          }
+      }
+      else {
+        return redirect()->route('course_managed')->with('warning', 'Whoops! You\'re unauthorized to access that page!');
+      }
+    }
+    /**
+     * Show the course $course.
+     * @param App\Course
+     * @return \Illuminate\Http\Response
+     */
+    protected function edit($id, array $data)
+    {
+      $item = Courseitem::find($id);
+      $item->description = Str::ucfirst($data['description']);
+      $item->scheme = $data['scheme'];
+      $item->save();
 
-    //   $period->save();
-
-    //   return $period;
-    // }
-    // /**
-    //  * Show the course $course.
-    //  * @param App\Course
-    //  * @return \Illuminate\Http\Response
-    //  */
-    // public function handleUpdate($id, $period, Request $request)
-    // {
-    //   $id = $this->is_digit($id);
-    //   $course = Course::findOrFail($id);      
-    //   if ($course->evaluator == Auth::user()->id) {
-    //     $period = $this->is_digit($period);
-    //     $periods = Courseperiod::findOrFail($period);
-    //       if ($periods->course == $course->id) {
-    //         $this->updateValidator($request->all())->validate();
-    //         $periods = $this->edit($period, $request->all());
-    //         return redirect()->route('course_managed_period_show', ['course' => $course->id, 'period' => $periods->id])->with('status', 'Course period successfully updated.');
-    //       }
-    //       else {
-    //         abort(404);
-    //       }
-    //   }
-    //   else {
-    //     return redirect()->route('course_managed')->with('warning', 'Whoops! You\'re unauthorized to access that page!');
-    //   }
-    // }
+      return $item;
+    }
+    /**
+     * Show the course $course.
+     * @param App\Course
+     * @return \Illuminate\Http\Response
+     */
+    public function handleUpdate($id, $period, $item, Request $request)
+    {
+      $id = $this->is_digit($id);
+      $course = Course::findOrFail($id);      
+      if ($course->evaluator == Auth::user()->id) {
+        $period = $this->is_digit($period);
+        $periods = Courseperiod::where('course', $id)->where('id', $period)->count();
+          if ($periods == 1) {
+            $item =  $this->is_digit($item);
+            $items = Courseitem::where('period', $period)->where('id', $item)->count();
+              if($items == 1){
+                $this->updateValidator($request->all())->validate();
+                $items = $this->edit($item, $request->all());
+                return redirect()->route('course_managed_period_item_show', ['course' => $id, 'period' => $period, 'item' => $item])->with('status', 'New item successfully created!');
+              }
+              else {
+                abort(404);
+              }
+          }
+          else {
+            abort(404);
+          }
+      }
+      else {
+        return redirect()->route('course_managed')->with('warning', 'Whoops! You\'re unauthorized to access that page!');
+      }
+    }
     /**
      * Show the course $course.
      * @param App\Course
@@ -181,20 +203,28 @@ class CoursePeriodItemController extends Controller
       $course = Course::findOrFail($id);      
       if ($course->evaluator == Auth::user()->id) {
         $period = $this->is_digit($period);
-        $periods = Courseperiod::where('course', 1)->where('id', 1)->count();
+        $periods = Courseperiod::where('course', $id)->where('id', $period)->count();
           if ($periods == 1) {
-            $this->deleteValidator($request->all())->validate();
-            if (Hash::check($request['password'], Auth::user()->password)) {
-              try {
-                $periods->delete();
-              } catch (QueryException $e) {
-                return back()->with('warning', 'Unable to delete period because it is still referenced from another table.');
+            $item =  $this->is_digit($item);
+            $items = Courseitem::where('period', $period)->where('id', $item)->count();
+              if($items == 1){
+                $this->deleteValidator($request->all())->validate();
+                if (Hash::check($request['password'], Auth::user()->password)) {
+                    try {
+                        $items = Courseitem::find($item);
+                        $items->delete();
+                        return 'Success';
+                    } catch (QueryException $e) {
+                        return back()->with('warning', 'Unable to delete item because it is still referenced from another table.');
+                    }
+                }
+                else {
+                    return back()->withErrors(['password' => 'I did\'nt recognize your password.']);
+                }
               }
-              return redirect()->route('course_managed_period', $course->id)->with('status', 'Period successfully deleted.');
-            }
-            else {
-              return back()->withErrors(['password' => 'I did\'nt recognize your password.']);
-            }
+              else {
+                abort(404);
+              }
           }
           else {
             abort(404);
@@ -249,7 +279,7 @@ class CoursePeriodItemController extends Controller
           $items = Courseitem::where('period', $period)->where('course', $id)->where('description', $request['description'])->count();
           if($items < 1) {
             $item = $this->create($id, $period, $request->all());
-            return $item;
+            return redirect()->route('course_managed_period_item_show', ['course' => $id, 'period' => $period, 'item' => $item->id])->with('status', 'New item successfully created!');
           }
           else {
             return back()->withErrors(['description' => 'Description should be unique.'])->withInput();

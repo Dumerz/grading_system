@@ -55,6 +55,10 @@
                   <td><a href="{{ route('course_managed_scheme', $course->id ) }}">{{ __($course->total_schemes) }} {{ __(str_plural('scheme', $course->total_schemes)) }}</a></td>
                 </tr>
                 <tr>
+                  <td>No of Items</td>
+                  <td><a href="{{ route('course_managed_scheme', $course->id ) }}">{{ __($course->total_schemes) }} {{ __(str_plural('item', $course->total_item)) }}</a></td>
+                </tr>
+                <tr>
                   <td>Status</td>
                   <td>{{ __(title_case($course->_status->description))}}</td>
                 </tr>

@@ -45,6 +45,15 @@ class Course extends Model
         return $this->hasMany('App\Coursescheme', 'course', 'id')->count();
     }
 
+    public function items()
+    {
+        return $this->hasMany('App\Courseitem', 'course', 'id');
+    }
+
+    public function getTotalItemAttribute()
+    {
+        return $this->hasMany('App\Courseitem', 'course', 'id')->count();
+    }
     public function students()
     {
         return $this->hasMany('App\Coursestudent', 'course', 'id');

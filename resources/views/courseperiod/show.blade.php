@@ -25,7 +25,7 @@
     <div class="card-header">
       <i class="fa fa-calendar"></i> <a href="{{ route('course_managed_show', $course->id) }}">{{ __($course->name) }}</a> / <a href="{{ route('course_managed_period', $course->id) }}"> Periods</a> / {{ __(title_case($period->description))}} / Show
       <a href="{{ route('course_managed_period_update', ['course' => $course->id, 'period' => $period->id]) }}" class="btn-sm btn-success float-right">
-      <i class="fa fa-plus"></i> 
+      <i class="fa fa-edit"></i> 
       {{ __('Update Period') }}
       </a>
     </div>

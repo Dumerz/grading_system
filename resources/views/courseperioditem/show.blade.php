@@ -7,12 +7,12 @@
       <a href="{{ route('home') }}">Dashboard</a>
     </li>
     <li class="breadcrumb-item">
-      <a href="{{ route('course_managed_show', $course->id) }}">Course</a>
+      <a href="{{ route('course_managed_show', $item->course) }}">Course</a>
     </li>
     <li class="breadcrumb-item active">
-      <a href="{{ route('course_managed_period', $course->id) }}">Periods</a>
+      <a href="{{ route('course_managed_period', $item->course) }}">Periods</a>
     </li>
-    <li class="breadcrumb-item active">Show</li>
+    <li href="" class="breadcrumb-item active">Show</li>
   </ol>
   @if (session('status'))
     <div class="mx-auto alert alert-success">
@@ -23,27 +23,39 @@
   <div class="col-lg-8 col-md-12 mb-3">
   <div class="card mb-3">
     <div class="card-header">
-      <i class="fa fa-calendar"></i> <a href="{{ route('course_managed_show', $course->id) }}">{{ __($course->name) }}</a> / <a href="{{ route('course_managed_period', $course->id) }}"> Periods</a> / {{ __(title_case($period->description))}} / Show
-      <a href="{{ route('course_managed_period_update', ['course' => $course->id, 'period' => $period->id]) }}" class="btn-sm btn-success float-right">
-      <i class="fa fa-plus"></i> 
-      {{ __('Update Period') }}
-      </a>
+      <i class="fa fa-calendar"></i> <a href="{{ route('course_managed_show', $item->course) }}">{{ __($item->_course->description) }}</a> / <a href="{{ route('course_managed_period', $item->course) }}"> {{ __($item->_period->description) }}</a> / <a href="{{ route('course_managed_period_show', ['course' => $item->course, 'period' => $item->period]) }}"> {{ __(title_case($item->description))}}</a> / Show
+      <a href="{{ route('course_managed_period_item_update', ['course' => $item->course, 'period' => $item->period, 'item' => $item->id]) }}" class="btn-sm btn-success float-right">
+          <i class="fa fa-edit"></i> 
+          {{ __('Update') }}
+          </a>
     </div>
     <div class="card-body">
       <div class="table-responsive">
           <table class="table" id="dataTable" width="100%" cellspacing="0">
             <tbody>
               <tr>
+                <td>Description</td>
+                <td>{{ __(title_case($item->description))}}</td>
+              </tr>
+              <tr>
+                <td>Scheme</td>
+                <td>{{ __(title_case($item->_scheme->description))}}</td>
+              </tr>
+              <tr>
                 <td>Period</td>
-                <td>{{ __(title_case($period->description))}}</td>
+                <td>{{ __(title_case($item->_period->description))}}</td>
+              </tr>
+              <tr>
+                <td>Max Score</td>
+                <td>{{ __($item->max_score) }}</td>
               </tr>
               <tr>
                 <td>Date Created</td>
-                <td>{{ __($period->created_at->diffForHumans()) }}</td>
+                <td>{{ __($item->created_at->diffForHumans()) }}</td>
               </tr>
               <tr>
                 <td>Date Updated</td>
-                <td>{{ __($period->updated_at->diffForHumans()) }}</td>
+                <td>{{ __($item->updated_at->diffForHumans()) }}</td>
               </tr>
             </tbody>
           </table>
@@ -51,7 +63,7 @@
     </div>
   </div>
   </div>
-  @component('courseperiod.components.actions', ['course' => $course, 'period' => $period])
+  @component('courseperioditem.components.actions', ['item' => $item])
 
   @endcomponent
   </div>

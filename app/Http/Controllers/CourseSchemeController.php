@@ -151,7 +151,7 @@ class CourseSchemeController extends Controller
           if ($schemes->course == $course->id) {
             $this->updateValidator($request->all())->validate();
             $count = Coursescheme::where('course', $id)->where('description', ucfirst($request['description']))->count();
-            if ($count = 0) {
+            if ($count == 0) {
               $schemes = $this->edit($scheme, $request->all());
               return redirect()->route('course_managed_scheme_show', ['course' => $course->id, 'scheme' => $schemes->id])->with('status', 'Course scheme successfully updated.');
             }

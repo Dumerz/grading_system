@@ -35,6 +35,7 @@
                 <th class="text-center">Ratees</th>
                 <th class="text-center">Periods</th>
                 <th class="text-center">Schemes</th>
+                <th class="text-center">Items</th>
                 <th>Status</th>
               </tr>
             </thead>
@@ -49,6 +50,7 @@
                  <td class="text-center"><a href="{{ route('course_managed_student', $course->id ) }}">{{ __($course->total_students) }}</a></td>
                  <td class="text-center"><a href="{{ route('course_managed_period', $course->id ) }}">{{ __($course->total_periods) }}</a></td>
                  <td class="text-center"><a href="{{ route('course_managed_scheme', $course->id ) }}">{{ __($course->total_schemes) }}</a></td>
+                 <td class="text-center"><a href="">{{ __($course->total_item) }}</a></td>
                  <td>{{ __(title_case($course->_status->description))}}</td>
               </tr>
               @php
