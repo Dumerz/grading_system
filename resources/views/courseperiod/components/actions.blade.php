@@ -24,6 +24,11 @@
           {{ __('Update period') }}
           </a>
           <hr/>
+          <a href="{{ route('course_managed_period_item_add', ['course' => $course->id, 'period' => $period->id]) }}" >
+          <i class="fa fa-plus"></i> 
+          {{ __('Add new item') }}
+          </a>
+          <hr/>
           <a class="text-danger" href="{{ route('course_managed_period_delete', ['course' => $course->id, 'period' => $period->id]) }}" >
           <i class="fa fa-times"></i> 
           {{ __('Delete period') }}

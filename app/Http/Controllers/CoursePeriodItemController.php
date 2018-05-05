@@ -243,25 +243,25 @@ class CoursePeriodItemController extends Controller
     {
       $id = $this->is_digit($id);
       $period = $this->is_digit($period);
-      return view('courseperioditem.add', ['course' => Course::findOrFail($id), 'period' => Courseperiod::findOrFail($id), 'schemes' => Coursescheme::where('course',$id)->get()]);
+      return view('courseperioditem.add', ['course' => Course::findOrFail($id), 'period' => Courseperiod::findOrFail($period), 'schemes' => Coursescheme::where('course',$id)->get()]);
     }
- //    /**
- //     * Show the users list.
- //     *
- //     * @return \Illuminate\Http\Response
- //     */
- //    public function list($id)
- //    {
- //      $id = $this->is_digit($id);
- //      $course = Course::findOrFail($id);
- //      if ($course->evaluator == Auth::user()->id) {
- //        return view('courseperiod.list', ['course' => $course, 'periods' => Courseperiod::where('course', $id)->paginate(10)]);
- //      }
- //      else {
- //        return redirect()->route('course_managed')->with('warning', 'Whoops! You\'re unauthorized to access that page!');
- //      }
+    /**
+     * Show the users list.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function list($id)
+    {
+      $id = $this->is_digit($id);
+      $course = Course::findOrFail($id);
+      if ($course->evaluator == Auth::user()->id) {
+        return view('courseperioditem.list', ['course' => $course, 'periods' => Courseperiod::where('course', $id)->orderBy('id', 'asc')->get(), 'items' => Courseitem::where('course', $id)->orderBy('scheme', 'asc')->get()]);
+      }
+      else {
+        return redirect()->route('course_managed')->with('warning', 'Whoops! You\'re unauthorized to access that page!');
+      }
 
- //    }
+    }
 	/**
 	* Show the user add view.
 	*

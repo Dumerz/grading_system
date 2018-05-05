@@ -14,15 +14,6 @@
     </li>
     <li href="" class="breadcrumb-item active">Update</li>
   </ol>
-@if ($errors->any())
-    <div class="alert alert-danger">
-        <ul>
-            @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-            @endforeach
-        </ul>
-    </div>
-@endif
   <div class="row">
   <div class="col-lg-9 col-md-12 mb-3">
   <div class="card mb-3">
@@ -90,6 +81,9 @@
     </div>
   </div>
   </div>
+  @component('courseperioditem.components.actions', ['item' => $item])
+
+  @endcomponent
   </div>
 </div>
 @endsection

@@ -50,7 +50,7 @@
                  <td class="text-center"><a href="{{ route('course_managed_student', $course->id ) }}">{{ __($course->total_students) }}</a></td>
                  <td class="text-center"><a href="{{ route('course_managed_period', $course->id ) }}">{{ __($course->total_periods) }}</a></td>
                  <td class="text-center"><a href="{{ route('course_managed_scheme', $course->id ) }}">{{ __($course->total_schemes) }}</a></td>
-                 <td class="text-center"><a href="">{{ __($course->total_item) }}</a></td>
+                 <td class="text-center"><a href="{{ route('course_managed_period_item', $course->id) }}">{{ __($course->total_item) }}</a></td>
                  <td>{{ __(title_case($course->_status->description))}}</td>
               </tr>
               @php

@@ -7,9 +7,12 @@
       <a href="{{ route('home') }}">Dashboard</a>
     </li>
     <li class="breadcrumb-item">
-      <a href="{{ route('course_managed_show', $course->id) }}">Course Managed</a>
+      <a href="{{ route('course_managed_show', $course->id) }}">Course</a>
     </li>
-    <li class="breadcrumb-item active">Periods</li>
+    <li class="breadcrumb-item">
+      <a href="{{ route('course_managed_period', $course->id) }}">Period</a>
+    </li>
+    <li class="breadcrumb-item active">Item</li>
   </ol>
   @if (session('status'))
     <div class="mx-auto alert alert-success">
@@ -20,12 +23,22 @@
       {{ session('status') }}
     </div>
   @endif
-    <div class="card mb-3">
+    <div class="card mb-3">  
       <div class="card-header">
-        <i class="fa fa-calendar"></i> <a href="{{ route('course_managed_show', $course->id) }}">{{ __($course->name) }}</a> / Periods
-        <a href="{{ route('course_managed_period_add', $course->id) }}" class="btn-sm btn-success float-right">
+      <i class="fa fa-calendar"></i> <a href="{{ route('course_managed_show', $course->id) }}">{{ __($course->name) }}</a> / <a href="{{ route('course_managed_period',['course' => $course->id]) }}">Periods</a> / Items
+        <a href="{{ route('course_managed_period_add', ['course' => $course->id]) }}" class="btn-sm btn-success float-right">
         <i class="fa fa-plus"></i> 
         {{ __('Add Period') }}
+        </a>
+      </div>
+    </div>
+  @foreach ($periods as $period)
+    <div class="card mb-3">
+      <div class="card-header">
+        <i class="fa fa-calendar"></i> <a href="{{ route('course_managed_period_show', ['course' => $course->id, 'period' => $period->id]) }}">{{ __($period->description) }}</a>
+        <a href="{{ route('course_managed_period_item_add', ['course' => $course->id, 'period' => $period->id]) }}" class="btn-sm btn-success float-right">
+        <i class="fa fa-plus"></i> 
+        {{ __('Add Item') }}
         </a>
       </div>
       <div class="card-body">
@@ -33,37 +46,30 @@
             <table class="table" id="dataTable" width="100%" cellspacing="0">
               <thead>
                 <tr>
-                  <th>SN.</th>
-                  <th>Period</th>
+                  <th>Item</th>
+                  <th>Scheme</th>
+                  <th>Max Score</th>
                   <th>Date created</th>
                   <th>Date last modified</th>
                 </tr>
               </thead>
               <tbody>
-            @php
-              $i = $periods->firstItem();
-            @endphp
-              @foreach ($periods as $period)
-                <tr>
-                  <td>{{ __($loop->iteration) }}</td>
-                  <td><a href="{{ route('course_managed_period_show', ['course' => $course->id, 'period' => $period->id]) }}"> {{ __(title_case($period->description))}}</a></td>
-                  <td>{{ __($period->created_at->diffForHumans()) }}</td>
-                  <td>{{ __($period->updated_at->diffForHumans()) }}</td>
-                </tr>
-                @php
-                  $i++;
-                @endphp
-              @endforeach
+                @foreach ($items as $item)
+                 @if ($item->period == $period->id)
+                 <tr>
+                  <td>{{ __($item->description) }}</td>
+                  <td>{{ __($item->_scheme->description) }}</td>
+                  <td>{{ __($item->max_score) }}</td>
+                  <td>{{ __($item->created_at->diffForHumans()) }}</td>
+                  <td>{{ __($item->updated_at->diffForHumans()) }}</td>
+                 </tr>
+                  @endif
+                @endforeach
               </tbody>
-              <tfoot>
-                <div class="row m-3">
-                <h6 class="pt-2">Showing item <strong>{{ $periods->firstItem() }}</strong> to <strong>{{ $periods->lastItem() }}</strong> of <strong>{{ $periods->total() }}</strong> records</h6>
-                {{ $periods->links('vendor.pagination.bootstrap-4') }}
-                </div>
-              </tfoot>
             </table>
           </div>
       </div>
     </div>
+@endforeach
   </div>
 @endsection

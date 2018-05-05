@@ -234,7 +234,7 @@ class CoursePeriodController extends Controller
       if ($course->evaluator == Auth::user()->id) {
 		$this->addValidator($request->all())->validate();
 		$period = $this->create($id, $request->all());
-		return redirect()->route('course_managed_period', $period->course)->with('status', 'Period successfully created.');
+		return redirect()->route('course_managed_period_show', ['course' => $period->course, 'period' => $period->id])->with('status', 'Period successfully created.');
       }
       else {
         return redirect()->route('course_managed')->with('warning', 'Whoops! You\'re unauthorized for that request!');

@@ -59,7 +59,9 @@
         </div>
       </div>
     </div>
+  @component('courseperioditem.components.actions', ['item' => $item])
 
+  @endcomponent
   </div>
 </div>
 @endsection

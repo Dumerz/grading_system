@@ -91,13 +91,13 @@ Route::post('/home/course_managed/{course}/delete', 'CourseTeachingController@ha
 Route::get('/home/course_managed/{course}/period', 'CoursePeriodController@list')->name('course_managed_period');
 Route::get('/home/course_managed/{course}/period/add', 'CoursePeriodController@add')->name('course_managed_period_add');
 Route::post('/home/course_managed/{course}/period/add', 'CoursePeriodController@handleAdd')->name('course_managed_period_handle_add');
+Route::get('/home/course_managed/{course}/period/items', 'CoursePeriodItemController@list')->name('course_managed_period_item');
 Route::get('/home/course_managed/{course}/period/{period}', 'CoursePeriodController@show')->name('course_managed_period_show');
 Route::get('/home/course_managed/{course}/period/{period}/update', 'CoursePeriodController@update')->name('course_managed_period_update');
 Route::post('/home/course_managed/{course}/period/{period}/update', 'CoursePeriodController@handleUpdate')->name('course_managed_period_handle_update');
 Route::get('/home/course_managed/{course}/period/{period}/delete', 'CoursePeriodController@delete')->name('course_managed_period_delete');
 Route::post('/home/course_managed/{course}/period/{period}/delete', 'CoursePeriodController@handleDelete')->name('course_managed_period_handle_delete');
 
-//Route::get('/home/course_managed/{course}/period/{period}/item', 'CoursePeriodController@update')->name('course_managed_period_item');
 Route::get('/home/course_managed/{course}/period/{period}/item/add', 'CoursePeriodItemController@add')->name('course_managed_period_item_add');
 Route::post('/home/course_managed/{course}/period/{period}/item/add', 'CoursePeriodItemController@handleAdd')->name('course_managed_period_item_hadle_add');
 Route::get('/home/course_managed/{course}/period/{period}/item/{item}', 'CoursePeriodItemController@show')->name('course_managed_period_item_show');
@@ -105,7 +105,6 @@ Route::get('/home/course_managed/{course}/period/{period}/item/{item}/delete', '
 Route::post('/home/course_managed/{course}/period/{period}/item/{item}/delete', 'CoursePeriodItemController@handleDelete')->name('course_managed_period_item_hadle_delete');
 Route::get('/home/course_managed/{course}/period/{period}/item/{item}/update', 'CoursePeriodItemController@update')->name('course_managed_period_item_update');
 Route::post('/home/course_managed/{course}/period/{period}/item/{item}/update', 'CoursePeriodItemController@handleUpdate')->name('course_managed_period_item_handle_update');
-
 
 Route::get('/home/course_managed/{course}/scheme', 'CourseSchemeController@list')->name('course_managed_scheme');
 Route::get('/home/course_managed/{course}/scheme/add', 'CourseSchemeController@add')->name('course_managed_scheme_add');

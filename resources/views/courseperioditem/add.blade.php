@@ -16,7 +16,7 @@
   </ol>
   <div class="card mb-3">
     <div class="card-header">
-      <i class="fa fa-calendar"></i> <a href="{{ route('course_managed_show', $course->id) }}">{{ __($course->name) }}</a> / <a href="{{ route('course_managed_period', $period->id) }}">{{ __($period->description) }}</a> / Add Item
+      <i class="fa fa-calendar"></i> <a href="{{ route('course_managed_show', $course->id) }}">{{ __($course->name) }}</a> / <a href="{{ route('course_managed_period_show',['course' => $course->id, 'period' => $period->id]) }}">{{ __($period->description) }}</a> / Add Item
     </div>
     <div class="card-body">
       <form method="POST" action="{{ route('course_managed_period_item_hadle_add', ['course' => $course->id, 'period' => $period->id] ) }}">

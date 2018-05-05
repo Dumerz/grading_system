@@ -24,6 +24,11 @@
           {{ __('Show Schemes') }}
           </a>
           <hr/>
+          <a href="{{ route('course_managed_period_item', $course->id) }}" >
+          <i class="fa fa-eye"></i> 
+          {{ __('Show Items') }}
+          </a>
+          <hr/>
           <a href="{{ route('course_managed_student', $course->id) }}" >
           <i class="fa fa-user"></i> 
           {{ __('Show Ratees') }}
