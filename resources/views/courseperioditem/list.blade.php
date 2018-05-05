@@ -57,8 +57,8 @@
                 @foreach ($items as $item)
                  @if ($item->period == $period->id)
                  <tr>
-                  <td>{{ __($item->description) }}</td>
-                  <td>{{ __($item->_scheme->description) }}</td>
+                  <td><a href="{{ route('course_managed_period_item_show', ['course' => $item->course, 'period' => $item->period, 'item' => $item->id]) }}">{{ __($item->description) }}</a></td>
+                  <td><a href="{{ route('course_managed_scheme_show', ['course' => $item->course, 'scheme' => $item->scheme]) }}">{{ __($item->_scheme->description) }}</a></td>
                   <td>{{ __($item->max_score) }}</td>
                   <td>{{ __($item->created_at->diffForHumans()) }}</td>
                   <td>{{ __($item->updated_at->diffForHumans()) }}</td>

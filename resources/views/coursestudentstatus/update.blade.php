@@ -13,7 +13,7 @@
   </ol>
   <div class="card mb-3">
     <div class="card-header">
-      <i class="fa fa-user-circle"></i> Course student status Update 
+      <i class="fa fa-check-circle"></i> Course student status Update 
       </div>
     <div class="card-body">
         <form method="POST" action="{{ route('course_student_status_handle_update', $coursestudentstatus->no) }}">

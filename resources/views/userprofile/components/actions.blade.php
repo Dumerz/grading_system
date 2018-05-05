@@ -11,12 +11,11 @@
             {{ __('Update user information') }}
             </a>
             <hr/>
+          @endif
             <a href="{{ route('user_profile_change_password', $user->id) }}" >
             <i class="fa fa-key"></i> 
             {{ __('Change password') }}
             </a>
-          @endif
-          </a>
         @endif
         </div>
       </div>

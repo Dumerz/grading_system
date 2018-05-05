@@ -15,6 +15,11 @@ class CreateCourseStudentEvaluationsTable extends Migration
     {
         Schema::create('coursestudentevaluations', function (Blueprint $table) {
             $table->increments('id');
+            $table->integer('course_item');
+            $table->foreign('course_item')->references('id')->on('courseitems')->onUpdate('cascade')->onDelete('restrict');
+            $table->integer('course_student');
+            $table->foreign('course_student')->references('id')->on('coursestudents')->onUpdate('cascade')->onDelete('restrict');
+            $table->integer('score');
             $table->timestamps();
         });
     }
@@ -26,6 +31,10 @@ class CreateCourseStudentEvaluationsTable extends Migration
      */
     public function down()
     {
+        Schema::table('coursestudentevaluations', function ($table) {
+            $table->dropForeign(['course_item']);
+            $table->dropForeign(['course_student']);
+        });
         Schema::dropIfExists('coursestudentevaluations');
     }
 }

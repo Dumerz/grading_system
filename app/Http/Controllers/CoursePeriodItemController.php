@@ -12,6 +12,8 @@ use App\Course;
 use App\Courseperiod;
 use App\Coursescheme;
 use App\Courseitem;
+use App\Coursestudent;
+use App\Courseevaluation;
 
 class CoursePeriodItemController extends Controller
 {
@@ -324,12 +326,76 @@ class CoursePeriodItemController extends Controller
 		]);
 		return $item;
 	}
-	// /**
-	// * Check Userstatus $id as digit.
-	// * @param App\Usertype $id
-	// * @param mixed $entry
-	// * @return mixed $entry
-	// */
+    /**
+     * Show the course $course.
+     * @param App\Course
+     * @return \Illuminate\Http\Response
+     */
+    public function grade($id, $period, $item)
+    {
+      $id = $this->is_digit($id);
+      $course = Course::findOrFail($id);     
+      if ($course->evaluator == Auth::user()->id) {
+        $period = $this->is_digit($period);
+        $periods = Courseperiod::where('course', $id)->where('id', $period)->count();
+          if($periods == 1) {
+            $item =  $this->is_digit($item);
+            $items = Courseitem::where('period', $period)->where('id', $item);
+              if($items->count() == 1){
+                $students = Coursestudent::where('course', $id)->orderBy('id', 'asc')->paginate(10);
+                $evaluations = Courseevaluation::where('course_item', $item)->get();
+                return view('courseperioditem.grade', ['item' => Courseitem::find($item), 'students' => $students, 'evaluations' => $evaluations]);
+              }
+              else {
+                abort(404);
+              }
+          }
+          else {
+            abort(404);
+          }
+      }
+      else {
+        return redirect()->route('course_managed')->with('warning', 'Whoops! You\'re unauthorized to access that page!');
+      }
+    }
+    /**
+     * Show the course $course.
+     * @param App\Course
+     * @return \Illuminate\Http\Response
+     */
+    public function grader($id, $period, $item)
+    {
+      $id = $this->is_digit($id);
+      $course = Course::findOrFail($id);     
+      if ($course->evaluator == Auth::user()->id) {
+        $period = $this->is_digit($period);
+        $periods = Courseperiod::where('course', $id)->where('id', $period)->count();
+          if($periods == 1) {
+            $item =  $this->is_digit($item);
+            $items = Courseitem::where('period', $period)->where('id', $item);
+              if($items->count() == 1){
+                $students = Coursestudent::where('course', $id)->orderBy('id', 'asc')->paginate(1);
+                $evaluations = Courseevaluation::where('course_item', $item)->get();
+                return view('courseperioditem.grader', ['item' => Courseitem::find($item), 'student' => $students, 'evaluations' => $evaluations]);
+              }
+              else {
+                abort(404);
+              }
+          }
+          else {
+            abort(404);
+          }
+      }
+      else {
+        return redirect()->route('course_managed')->with('warning', 'Whoops! You\'re unauthorized to access that page!');
+      }
+    }
+	/**
+	* Check Userstatus $id as digit.
+	* @param App\Usertype $id
+	* @param mixed $entry
+	* @return mixed $entry
+	*/
 	protected function is_digit($entry)
 	{
 	  if (!ctype_digit($entry)) {

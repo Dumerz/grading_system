@@ -20,7 +20,7 @@
     <div class="col-lg-8 col-md-12 mb-3">
       <div class="card mb-3">
         <div class="card-header">
-          <i class="fa fa-book"></i> Delete Course Managed
+          <i class="fa fa-briefcase"></i> Delete Course Managed
         </div>
         <div class="card-body">
           <div class="text-center">

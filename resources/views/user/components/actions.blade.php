@@ -14,13 +14,14 @@
           <i class="fa fa-edit"></i> 
           {{ __('Update user information') }}
           </a>
-        @elseif($user->usertype != 'USRTYPE003')
+        @endif
+        @if($user->usertype != 'USRTYPE003')
           <hr/>
           <a href="{{ route('user_change_password', $user->id) }}" >
           <i class="fa fa-key"></i> 
           {{ __('Change password') }}
           </a>
-        @elseif($user->id == Auth::user()->id)
+        @elseif($user->usertype != 'USRTYPE003' || $user->id == Auth::user()->id)
           <hr/>
           <a href="{{ route('user_change_password', $user->id) }}" >
           <i class="fa fa-key"></i> 

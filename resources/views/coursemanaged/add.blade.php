@@ -13,7 +13,7 @@
   </ol>
   <div class="card mb-3">
     <div class="card-header">
-      <i class="fa fa-book"></i> Add a Course to manage
+      <i class="fa fa-briefcase"></i> Add a Course to manage
     </div>
     <div class="card-body">
       <form method="POST" action="{{ route('course_managed_handle_add') }}">

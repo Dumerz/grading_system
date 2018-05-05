@@ -19,7 +19,7 @@
   @endif
   <div class="card mb-3">
     <div class="card-header">
-      <i class="fa fa-book"></i> Courses Managed
+      <i class="fa fa-briefcase"></i> Courses Managed
         <a href="{{ route('course_managed_add') }}" class="btn-sm btn-success float-right">
         <i class="fa fa-plus"></i> 
         {{ __('Add New') }}

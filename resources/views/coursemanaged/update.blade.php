@@ -15,7 +15,7 @@
   <div class="col-lg-9 col-md-12 mb-3">
     <div class="card mb-3">
       <div class="card-header">
-        <i class="fa fa-book"></i> Update Course Managed
+        <i class="fa fa-briefcase"></i> Update Course Managed
         </div>
       <div class="card-body">
           <form method="POST" action="{{ route('course_managed_handle_update', $course->id) }}">

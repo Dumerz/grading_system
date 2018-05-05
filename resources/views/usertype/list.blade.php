@@ -18,6 +18,7 @@
               <tr>
                 <th>SN.</th>
                 <th>Usertypes</th>
+                <th>No. of User</th>
                 <th>Date created</th>
                 <th>Date last modified</th>
               </tr>
@@ -30,6 +31,7 @@
               <tr>
                 <td>{{ $i }}</td>
                 <td><a href="{{ route('usertype_show', $usertype->no) }}">{{ __(title_case($usertype->description))}}</td>
+                <td>{{ $usertype->total_ratee }}</td>
                 <td>{{ $usertype->created_at->diffForHumans() }}</td>
                 <td>{{ $usertype->updated_at->diffForHumans() }}</td>
               </tr>

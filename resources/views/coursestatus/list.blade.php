@@ -15,7 +15,7 @@
   @endif
   <div class="card mb-3">
     <div class="card-header">
-      <i class="fa fa-book"></i> Course Status
+      <i class="fa fa-sticky-note"></i> Course Status
     </div>
     <div class="card-body">
       <div class="table-responsive">

@@ -20,7 +20,7 @@
   <div class="col-lg-9 col-md-12 mb-3">
     <div class="card mb-3">
       <div class="card-header">
-        <i class="fa fa-book"></i> Course Managed
+        <i class="fa fa-briefcase"></i> Course Managed
         <a href="{{ route('course_managed_update', $course->id) }}" class="btn-sm btn-success float-right">
         <i class="fa fa-edit"></i> 
         {{ __('Update') }}

@@ -18,7 +18,7 @@
   @endif
   <div class="card mb-3">
     <div class="card-header">
-      <i class="fa fa-book"></i> Course student status
+      <i class="fa fa-check-circle"></i> Course student status
       <a href="{{ route('course_student_status_update', $coursestudentstatus->no) }}" class="btn-sm btn-success float-right">
       <i class="fa fa-edit"></i> 
       {{ __('Update') }}

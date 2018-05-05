@@ -70,7 +70,7 @@
         </div>
       </div>
     </div>
-  @component('user.components.actions', ['user' => $user])
+  @component('userprofile.components.actions', ['user' => $user])
 
   @endcomponent
   </div>

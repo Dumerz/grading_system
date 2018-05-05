@@ -134,7 +134,7 @@ class UserProfileController extends Controller
   {
     $id = $this->is_digit($id);
     $user = User::findOrFail($id);
-    if($user->usertype == 'USRTYPE001' || $user->id != Auth::user()->id)
+    if($user->id != Auth::user()->id)
     {
       return redirect()->route('user_profile_show', $user->id)->with('warning', 'You\'re unauthorized for that request.'); 
     }
@@ -170,7 +170,7 @@ class UserProfileController extends Controller
   {
     $id = $this->is_digit($id);
     $user = User::findOrFail($id);
-      if($user->usertype == 'USRTYPE001' && $user->id != Auth::user()->id)
+      if($user->id != Auth::user()->id)
       {
         return redirect()->route('user_profile_show', $user->id)->with('warning', 'You\'re unauthorized for that request.'); 
       }

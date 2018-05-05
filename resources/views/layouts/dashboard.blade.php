@@ -11,7 +11,7 @@
     <!-- Styles -->
     <link href="{{ asset('vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
     <link href="{{ asset('vendor/font-awesome/css/fontawesome-all.min.css') }}" rel="stylesheet" type="text/css">
-    <link href="{{ asset('css/sb-admin.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/sb-admin.min.css') }}" rel="stylesheet" type="text/css">
 </head>
 <body class="fixed-nav sticky-footer bg-dark" id="page-top">
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav">
@@ -31,6 +31,9 @@
         <a class="nav-link nav-link-collapse" data-toggle="collapse" href="#collapseComponentsMyCourse">
           <i class="fas fa-fw fa-book"></i>
           <span class="nav-link-text">My Courses</span>
+          <span class="float-right">
+          <i class="fa fa-angle-right"></i>
+          </span>
         </a>
           <ul class="sidenav-second-level collapse" id="collapseComponentsMyCourse">
             <li class="nav-item">
@@ -52,11 +55,14 @@
         <a class="nav-link nav-link-collapse" data-toggle="collapse" href="#collapseComponentsCourse">
           <i class="fas fa-fw fa-book"></i>
           <span class="nav-link-text">Course Administration</span>
+          <span class="float-right">
+          <i class="fa fa-angle-right"></i>
+          </span>
         </a>
           <ul class="sidenav-second-level collapse" id="collapseComponentsCourse">
             <li class="nav-item">
               <a class="nav-link" href="{{ route('course_managed') }}">
-                <i class="fa fa-fw fa-book"></i>
+                <i class="fa fa-fw fa-briefcase"></i>
                 <span class="nav-link-text">Courses Managed</span>
               </a>
             </li>
@@ -68,6 +74,9 @@
         <a class="nav-link nav-link-collapse" data-toggle="collapse" href="#collapseComponentsSite">
           <i class="fas fa-fw fa-sliders-h"></i>
           <span class="nav-link-text">Site Administration</span>
+          <span class="float-right">
+          <i class="fa fa-angle-right"></i>
+          </span>
         </a>
         <ul class="sidenav-second-level collapse" id="collapseComponentsSite">
           <li class="nav-item">
@@ -90,8 +99,14 @@
           </li>
           <li class="nav-item">
             <a class="nav-link" href="{{ route('course_status') }}">
-              <i class="fa fa-fw fa-book"></i>
+              <i class="fa fa-fw fa-sticky-note"></i>
               <span class="nav-link-text">Course status</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{ route('course_student_status') }}">
+              <i class="fa fa-fw fa-check-circle"></i>
+              <span class="nav-link-text">Course student status</span>
             </a>
           </li>
           <li class="nav-item">

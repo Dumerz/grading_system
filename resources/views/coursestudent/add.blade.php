@@ -14,7 +14,13 @@
     </li>
     <li href="" class="breadcrumb-item active">Add</li>
   </ol>
+@if ($errors->any())
+  <div class="alert alert-danger">
+    {{ $errors->first() }}
+  </div>
+@endif
   <form method="POST" action="{{ route('course_managed_student_handle_add', $course) }}">
+  @csrf
   <div class="card mb-3">
     <div class="card-header">
       <i class="fa fa-book"></i> Enroll Student to Course
@@ -39,30 +45,18 @@
               </tr>
             </thead>
             <tbody>
-            @php
-              $i = $students->firstItem();
-            @endphp
             @foreach ($students as $student)
               <tr>
                 <td><input type="checkbox" name="id[]" value="{{ $student->id }}"></td>
-                <td>{{ $i }}</td>
+                <td></td>
                 <td><a href="{{ route('user_profile_show', $student->id) }}">{{ __($student->name_full) }}</a></td>
                 <td>{{ __(title_case($student->gender))}}</td>
                 <td>{{ __($student->age) }}</td>
                 <td>{{ $student->created_at->diffForHumans()}}</td>
                 <td>{{ $student->updated_at->diffForHumans()}}</td>
               </tr>
-              @php
-                $i++;
-              @endphp
             @endforeach
             </tbody>
-            <tfoot>
-              <div class="row m-0">
-                <h6 class="pt-2">Showing item <strong>{{ $students->firstItem() }}</strong> to <strong>{{ $students->lastItem() }}</strong> of <strong>{{ $students->total() }}</strong> records</h6>
-                {{ $students->links('vendor.pagination.bootstrap-4') }}
-              </div>
-            </tfoot>
           </table>
       </div>
     </div>

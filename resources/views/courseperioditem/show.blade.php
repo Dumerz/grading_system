@@ -7,7 +7,7 @@
       <a href="{{ route('home') }}">Dashboard</a>
     </li>
     <li class="breadcrumb-item">
-      <a href="{{ route('course_managed_show', $item->course) }}">Course</a>
+      <a href="{{ route('course_managed_show', $item->course) }}">Course Managed</a>
     </li>
     <li class="breadcrumb-item active">
       <a href="{{ route('course_managed_period', $item->course) }}">Periods</a>
