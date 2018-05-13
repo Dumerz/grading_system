@@ -39,11 +39,11 @@
               </tr>
               <tr>
                 <td>Scheme</td>
-                <td>{{ __(title_case($item->_scheme->description))}}</td>
+                <td><a href="{{ route('course_managed_scheme_show', ['course' => $item->course, 'scheme' => $item->scheme]) }}">{{ __(title_case($item->_scheme->description))}}</a></td>
               </tr>
               <tr>
                 <td>Period</td>
-                <td>{{ __(title_case($item->_period->description))}}</td>
+                <td><a href="{{ route('course_managed_period_show', ['course' => $item->course, 'period' => $item->period]) }}">{{ __(title_case($item->_period->description))}}</a></td>
               </tr>
               <tr>
                 <td>Max Score</td>

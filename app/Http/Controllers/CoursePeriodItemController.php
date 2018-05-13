@@ -390,6 +390,95 @@ class CoursePeriodItemController extends Controller
         return redirect()->route('course_managed')->with('warning', 'Whoops! You\'re unauthorized to access that page!');
       }
     }
+  /**
+  * Create a new user instance after a valid registration.
+  *
+  * @param  array  $data
+  * @return \App\User
+  */
+  protected function addNewGrade($item, array $data)
+  { //'course_item', 'course_student', 'score'
+    $eval = Courseevaluation::create([
+      'course_item' => $item,
+      'course_student' => $data['student'],
+      'score' => $data['score']
+    ]);
+    return $eval;
+  }
+    /**
+     * Get a validator for an incoming registration request.
+     *
+     * @param  array  $data
+     * @return \Illuminate\Contracts\Validation\Validator
+     */
+    protected function gradeValidator($max, array $data)
+    {
+
+      return Validator::make($data, [
+        'student' => 'required|integer|exists:coursestudents,id',
+        'score' => 'required|integer|min:0|max:'.$max
+      ]);
+    }
+  /**
+   * Show the course $course.
+   * @param App\Course
+   * @return \Illuminate\Http\Response
+   */
+  protected function updateGrade($id, array $data)
+  {
+    $eval = Courseevaluation::find($id);
+    $eval->score = $data['score'];
+    $eval->save();
+
+    return $eval;
+  }
+    /**
+     * Show the course $course.
+     * @param App\Course
+     * @return \Illuminate\Http\Response
+     */
+    public function handleGrader($id, $period, $item, Request $request)
+    {
+      $id = $this->is_digit($id);
+      $course = Course::findOrFail($id);     
+      if ($course->evaluator == Auth::user()->id) {
+        $period = $this->is_digit($period);
+        $periods = Courseperiod::where('course', $id)->where('id', $period)->count();
+          if($periods == 1) {
+            $item =  $this->is_digit($item);
+            $items = Courseitem::where('period', $period)->where('id', $item);
+              if($items->count() == 1){
+                $student = Coursestudent::where('course', $id)->where('id', $request['student']);
+                if($student->count() == 1){
+                  $max = $items->first();
+                  $this->gradeValidator($max->max_score, $request->all())->validate();
+                  $evaluation = Courseevaluation::where('course_item', $item)->where('course_student', $request['student']);
+                  if($evaluation->count() == 1){
+                    $eval = $evaluation->first();
+                    $this->updateGrade($eval->id, $request->all());
+                    return back()->with('status', 'Grade successfully updated.');
+                  }
+                  else {
+                    $this->addNewGrade($item, $request->all());
+                    return back()->with('status', 'Student successfully graded.');
+                  }
+                }
+                else {
+                  abort(404);
+                }
+              }
+              else {
+                abort(404);
+              }
+          }
+          else {
+            abort(404);
+          }
+      }
+      else {
+        return redirect()->route('course_managed')->with('warning', 'Whoops! You\'re unauthorized to access that page!');
+      }
+    }
 	/**
 	* Check Userstatus $id as digit.
 	* @param App\Usertype $id

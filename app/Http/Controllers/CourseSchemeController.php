@@ -275,9 +275,70 @@ class CourseSchemeController extends Controller
         $schemes = Coursescheme::create([
           'description' => Str::ucfirst($data['description']),
           'course' => $id,
-          'amount' => 0.25
+          'amount' => 0
         ]);
         return $schemes;
+    }
+    /**
+    * Create a new user instance after a valid registration.
+    *
+    * @param  array  $data
+    * @return \App\User
+    */
+    protected function distributeScheme($id)
+    {
+      $id = $this->is_digit($id);
+      $course = Course::findOrFail($id);
+      if ($course->evaluator == Auth::user()->id) {
+        $schemes = Coursescheme::where('course', $id)->get();
+        return view('coursescheme.distribute', ['course' => Course::findOrFail($id), 'schemes' => $schemes]);
+      }
+      else {
+        return redirect()->route('course_managed')->with('warning', 'Whoops! You\'re unauthorized for that request!');
+      }
+    }
+    /**
+    * Create a new user instance after a valid registration.
+    *
+    * @param  array  $data
+    * @return \App\User
+    */
+    protected function handleDistributeScheme($id, Request $request)
+    {
+      $id = $this->is_digit($id);
+      $course = Course::findOrFail($id);
+      if ($course->evaluator == Auth::user()->id) {
+      $total = 0;
+      foreach ($request->input('scheme') as $scheme) {
+        $total = $total + $scheme;
+      }
+        if($total == 100) {
+          foreach ($request->input('scheme') as $key => $scheme) {
+            $this->editScheme($key, $scheme);
+          }
+          return back()->with('status', 'Coursescheme successfully distributed.');
+        }
+        else {
+          return back()->with('warning', 'Coursescheme distribution is not equal to 100%.');
+        }
+      }
+      else {
+        return redirect()->route('course_managed')->with('warning', 'Whoops! You\'re unauthorized for that request!');
+      }
+    }
+    /**
+     * Show the course $course.
+     * @param App\Course
+     * @return \Illuminate\Http\Response
+     */
+    protected function editScheme($id, $data)
+    {
+      $scheme = Coursescheme::find($id);
+      $scheme->amount = $data;
+
+      $scheme->save();
+
+      return $scheme;
     }
     /**
     * Check Userstatus $id as digit.

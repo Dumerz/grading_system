@@ -56,7 +56,7 @@
                 </tr>
                 <tr>
                   <td>No of Items</td>
-                  <td><a href="{{ route('course_managed_scheme', $course->id ) }}">{{ __($course->total_schemes) }} {{ __(str_plural('item', $course->total_item)) }}</a></td>
+                  <td><a href="{{ route('course_managed_period_item', $course->id ) }}">{{ __($course->total_schemes) }} {{ __(str_plural('item', $course->total_item)) }}</a></td>
                 </tr>
                 <tr>
                   <td>Status</td>

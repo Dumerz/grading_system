@@ -26,6 +26,10 @@
   <div class="card mb-3">
     <div class="card-header">
       <i class="fa fa-calendar"></i> <a href="{{ route('course_managed_show', $item->course) }}">{{ __($item->_course->description) }}</a> / <a href="{{ route('course_managed_period', $item->course) }}"> {{ __($item->_period->description) }}</a> / <a href="{{ route('course_managed_period_show', ['course' => $item->course, 'period' => $item->period]) }}"> {{ __(title_case($item->description))}}</a> / Grade
+      <a href="{{ route('course_managed_period_item_grader', ['course' => $item->course, 'period' => $item->period, 'item' => $item->id]) }}" class="btn-sm btn-success float-right">
+      <i class="fa fa-check"></i> 
+      {{ __('Grade Ratees') }}
+      </a>
     </div>
     <div class="card-body">
       <div class="table-responsive">

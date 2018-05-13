@@ -25,10 +25,14 @@
   @endif
   <div class="card mb-3">
     <div class="card-header">
-      <i class="fa fa-calendar"></i> <a href="{{ route('course_managed_show', $item->course) }}">{{ __($item->_course->description) }}</a> / <a href="{{ route('course_managed_period', $item->course) }}"> {{ __($item->_period->description) }}</a> / <a href="{{ route('course_managed_period_show', ['course' => $item->course, 'period' => $item->period]) }}"> {{ __(title_case($item->description))}}</a> / Grade
+      <i class="fa fa-calendar"></i> <a href="{{ route('course_managed_show', $item->course) }}">{{ __($item->_course->description) }}</a> / <a href="{{ route('course_managed_period', $item->course) }}"> {{ __($item->_period->description) }}</a> / <a href="{{ route('course_managed_period_item_show', ['course' => $item->course, 'period' => $item->period, 'item' => $item->id]) }}"> {{ __(title_case($item->description))}}</a> / Grade
+      <a href="{{ route('course_managed_period_item_grade', ['course' => $item->course, 'period' => $item->period, 'item' => $item->id]) }}" class="btn-sm btn-success float-right">
+      <i class="fa fa-eye"></i> 
+      {{ __('Show Grades') }}
+      </a>
     </div>
     <div class="card-body">
-      <form method="POST" action="">
+      <form method="POST") }}">
       @csrf
       @foreach ($student as $stud)
         <div class="form-group row">
@@ -38,6 +42,7 @@
             <label for="name" class="col-md-6 col-form-label text-md-left">
                 <a href="{{ route('user_profile_show', $stud->_user->id) }}">{{ __($stud->_user->name_full) }}</a>
             </label>
+            <input type="hidden" name="student" value="{{ $stud->id }}" required>
             </div>
           </div>
         </div>
@@ -46,7 +51,7 @@
           <label for="description" class="col-md-4 col-form-label text-md-right">{{ __('Score') }}</label>
           <div class="col-md-6">
             <div class="input-group mb-2 mr-sm-2">
-              <input type="number" class="form-control {{ $errors->has('name') ? ' is-invalid' : '' }}" name="name" id="score" value="{{ old('score') }}" placeholder="Score" autofocus required>
+              <input type="number" class="form-control {{ $errors->has('name') ? ' is-invalid' : '' }}" name="score" id="score" min="0" max="{{ $item->max_score }}" value="{{ old('score') }}" placeholder="Score" autofocus required>
               @if ($errors->has('score'))
                 <span class="invalid-feedback">
                   <strong>{{ $errors->first('score') }}</strong>

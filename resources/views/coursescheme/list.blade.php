@@ -27,6 +27,10 @@
         <i class="fa fa-plus"></i> 
         {{ __('Add Scheme') }}
         </a>
+        <a href="{{ route('course_managed_scheme_distribute', $course->id) }}" class="btn-sm btn-success float-right">
+        <i class="fa fa-pie-chart"></i> 
+        {{ __('Distribute Scheme') }}
+        </a>
       </div>
       <div class="card-body">
         <div class="table-responsive">

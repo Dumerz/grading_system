@@ -51,6 +51,7 @@
                   <th>Max Score</th>
                   <th>Date created</th>
                   <th>Date last modified</th>
+                  <th>Actions</th>
                 </tr>
               </thead>
               <tbody>
@@ -62,6 +63,12 @@
                   <td>{{ __($item->max_score) }}</td>
                   <td>{{ __($item->created_at->diffForHumans()) }}</td>
                   <td>{{ __($item->updated_at->diffForHumans()) }}</td>
+                  <td>
+                    <div class="btn-group" role="group" aria-label="Basic example">
+                      <a href="{{ route('course_managed_period_item_grade', ['course' => $item->course, 'period' => $item->period, 'item' => $item->id]) }}" class="btn btn-success">Show Grades</a>
+                      <a href="{{ route('course_managed_period_item_grader', ['course' => $item->course, 'period' => $item->period, 'item' => $item->id]) }}" class="btn btn-primary">Grade Ratees</a>
+                    </div>
+                  </td>
                  </tr>
                   @endif
                 @endforeach

@@ -9,7 +9,11 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Database\QueryException;
 use App\Course;
 use App\Coursestudent;
+use App\Courseperiod;
+use App\Coursescheme;
 use App\User;
+use App\Courseitem;
+use App\Courseevaluation;
 
 class CourseStudentController extends Controller
 {
@@ -33,8 +37,33 @@ class CourseStudentController extends Controller
 	{
     $id = $this->is_digit($id);
 		$students = Coursestudent::where('course', $id)->orderBy('id', 'asc')->paginate(10);
+    $periods = Courseperiod::where('course', $id)->get();
 		return view('coursestudent.list', ['course' => Course::findOrFail($id), 'students' => $students]);
 	}
+  /**
+  * Show the user add view.
+  *
+  * @return \Illuminate\Http\Response
+  */
+  public function showGrade($id)
+  {
+    $id = $this->is_digit($id);
+    $students = Coursestudent::where('course', $id)->orderBy('id', 'asc')->paginate(10);
+    $periods = Courseperiod::where('course', $id)->get();
+    $schemes = Coursescheme::where('course', $id)->get();
+    $items = Courseitem::where('course', $id)->get();
+    $evaluations = Courseevaluation::all();
+    $evaluation = collect(New Courseevaluation);
+      foreach ($items as $item) {
+        foreach ($evaluations as $evals) {
+          if($evals->course_item == $item->id){
+          $evaluation->push($evals);
+          }
+        }
+      }
+    return view('coursestudent.grade', ['course' => Course::findOrFail($id), 'students' => $students, 'periods' => $periods, 'items' => $items, 'evaluations' => $evaluation, 'schemes' => $schemes]);
+      return var_dump($evaluation);
+  }
     /**
     * Show the user add view.
     *
@@ -130,7 +159,7 @@ class CourseStudentController extends Controller
     {
         foreach ($data['id'] as $stud) {
           $student = Coursestudent::where('course', $id)->where('student', $stud);
-            if($stud < 1){
+            if($student->count() < 1){
               $student = Coursestudent::create([
                 'student' => $stud,
                 'course' => $id,

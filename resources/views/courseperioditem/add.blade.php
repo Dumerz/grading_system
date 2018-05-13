@@ -12,7 +12,7 @@
     <li class="breadcrumb-item">
       <a href="{{ route('course_managed_period', $period->id) }}">Period</a>
     </li>
-    <li href="" class="breadcrumb-item active">Add Item</li>
+    <li class="breadcrumb-item active">Add Item</li>
   </ol>
   <div class="card mb-3">
     <div class="card-header">

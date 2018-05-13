@@ -24,6 +24,11 @@
           {{ __('Show Schemes') }}
           </a>
           <hr/>
+          <a href="{{ route('course_managed_scheme_distribute', $course->id) }}" >
+          <i class="fa fa-chart-pie"></i> 
+          {{ __('Distribute Schemes') }}
+          </a>
+          <hr/>
           <a href="{{ route('course_managed_period_item', $course->id) }}" >
           <i class="fa fa-eye"></i> 
           {{ __('Show Items') }}
@@ -32,6 +37,11 @@
           <a href="{{ route('course_managed_student', $course->id) }}" >
           <i class="fa fa-user"></i> 
           {{ __('Show Ratees') }}
+          </a>
+          <hr/>
+          <a href="{{ route('course_managed_student_grade', $course->id) }}" >
+          <i class="fa fa-user"></i> 
+          {{ __('Show Ratees Grade') }}
           </a>
           <hr/>
           <a class="text-danger" href="{{ route('course_managed_delete', $course->id) }}" >

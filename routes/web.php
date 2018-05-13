@@ -80,6 +80,7 @@ Route::post('/home/course_managed/add', 'CourseTeachingController@handleAdd')->n
 Route::get('/home/course_managed/{course}/ratee', 'CourseStudentController@show')->name('course_managed_student');
 Route::get('/home/course_managed/{course}/ratee/add', 'CourseStudentController@add')->name('course_managed_student_add');
 Route::post('/home/course_managed/{course}/ratee/add', 'CourseStudentController@handleAdd')->name('course_managed_student_handle_add');
+Route::get('/home/course_managed/{course}/ratee/grade', 'CourseStudentController@showGrade')->name('course_managed_student_grade');
 Route::post('/home/course_managed/{course}/ratee/remove', 'CourseStudentController@handleRemove')->name('course_managed_student_handle_remove');
 Route::get('/home/course_managed/{course}', 'CourseTeachingController@show')->name('course_managed_show');
 Route::get('/home/course_managed/{course}/update', 'CourseTeachingController@update')->name('course_managed_update');
@@ -106,10 +107,13 @@ Route::get('/home/course_managed/{course}/period/{period}/item/{item}/update', '
 Route::post('/home/course_managed/{course}/period/{period}/item/{item}/update', 'CoursePeriodItemController@handleUpdate')->name('course_managed_period_item_handle_update');
 Route::get('/home/course_managed/{course}/period/{period}/item/{item}/grade', 'CoursePeriodItemController@grade')->name('course_managed_period_item_grade');
 Route::get('/home/course_managed/{course}/period/{period}/item/{item}/grader', 'CoursePeriodItemController@grader')->name('course_managed_period_item_grader');
+Route::post('/home/course_managed/{course}/period/{period}/item/{item}/grader', 'CoursePeriodItemController@handleGrader')->name('course_managed_period_item_handle_grader');
 
 Route::get('/home/course_managed/{course}/scheme', 'CourseSchemeController@list')->name('course_managed_scheme');
 Route::get('/home/course_managed/{course}/scheme/add', 'CourseSchemeController@add')->name('course_managed_scheme_add');
 Route::post('/home/course_managed/{course}/scheme/add', 'CourseSchemeController@handleAdd')->name('course_managed_scheme_handle_add');
+Route::get('/home/course_managed/{course}/scheme/distribute', 'CourseSchemeController@distributeScheme')->name('course_managed_scheme_distribute');
+Route::post('/home/course_managed/{course}/scheme/distribute', 'CourseSchemeController@handleDistributeScheme')->name('course_managed_scheme_handle_distribute');
 Route::get('/home/course_managed/{course}/scheme/{scheme}', 'CourseSchemeController@show')->name('course_managed_scheme_show');
 Route::get('/home/course_managed/{course}/scheme/{scheme}/update', 'CourseSchemeController@update')->name('course_managed_scheme_update');
 Route::post('/home/course_managed/{course}/scheme/{scheme}/update', 'CourseSchemeController@handleUpdate')->name('course_managed_scheme_handle_update');
